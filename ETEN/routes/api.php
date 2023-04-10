@@ -2,6 +2,10 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\RecetaController;
+use App\Http\Controllers\OfertaController;
+use App\Http\Controllers\UsuarioController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -14,6 +18,17 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+
+Routes::get ("recetas/VerReceta/{nombreReceta}",[RecetaController::class, "VerReceta"]);
+Routes::get ("recetas/BuscarReceta/{titulo}",[RecetaController::class, "BuscarReceta"]);
+Routes::get ("ofertas/BuscarOferta",[OfertaController::class, "BuscarOferta"]);
+
+
+Routes::post ("usuarios/CrearUsuario",[UsuarioController::class, "CrearUsuario"]);
+Routes::post ("usuarios/login",[UsuarioController::class, "login"]);
+Routes::post ("usuarios/Registro",[UsuarioController::class, "Registro"]);
+
+Ruotes::put ("usuarios/ActualizarDatosUsuario",[UsuarioController::class, "ActualizarDatosUsuario"]);
+Routes::put ("recetas/updateEstadoReceta", [RecetaController::class, "updateEstadoReceta"]);
+
+
