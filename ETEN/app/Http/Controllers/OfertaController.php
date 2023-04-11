@@ -9,7 +9,7 @@ use App\Models\Oferta;
 
 class OfertaController extends Controller
 {
-    public function BuscarOferta()
+    public function ObtenerOfertas()
     {
         $oferta = Oferta::getAll();
         return "Receta: $oferta";

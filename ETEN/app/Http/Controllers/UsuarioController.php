@@ -61,6 +61,15 @@ class UsuarioController extends Controller
         $user->save();
         return "Usuario actualizado correctamente";
         }
+    
+
+    public function RecetasUsuario($id)
+    {
+        $usuario = Usuario::findOrFail($id);
+        $recetas = $usuario->recetas;
+        return "Recetas del usuario: $recetas";
+    }
+
 
 
 }

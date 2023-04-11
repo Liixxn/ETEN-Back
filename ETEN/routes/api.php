@@ -21,7 +21,8 @@ use App\Http\Controllers\UsuarioController;
 
 Routes::get ("recetas/VerReceta/{nombreReceta}",[RecetaController::class, "VerReceta"]);
 Routes::get ("recetas/BuscarReceta/{titulo}",[RecetaController::class, "BuscarReceta"]);
-Routes::get ("ofertas/BuscarOferta",[OfertaController::class, "BuscarOferta"]);
+Routes::get ("recetas/RecetasUsuario/{id}",[UsuarioController::class, "RecetasUsuario"]);
+Routes::get ("ofertas/ObtenerOfertas",[OfertaController::class, "ObtenerOfertas"]);
 
 
 Routes::post ("usuarios/CrearUsuario",[UsuarioController::class, "CrearUsuario"]);

@@ -32,16 +32,8 @@ class RecetaController extends Controller
         return "Receta actualizada";
     }
 
-
     
-
     
-
-
-
-
-    
-
 
 
 }
