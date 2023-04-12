@@ -8,6 +8,8 @@ use App\Models\Usuario;
 
 class UsuarioController extends Controller
 {
+    
+
     public function CrearUsuario(Request $request)
     {
         $usuario = new Usuario();
@@ -51,14 +53,14 @@ class UsuarioController extends Controller
     public function ActualizarDatosUsuario(Request $request)
     {
         // Obtener el usuario a actualizar
-        $usuario = User::findOrFail($id);
+        $usuario = usuario::findOrFail($request->id);
 
         // Actualizar los datos del usuario
         $usuario->name = $request->input('name');
         $usuario->email = $request->input('email');
         $usuario->password = bcrypt($request->input('password'));
 
-        $user->save();
+        $usuario->save();
         return "Usuario actualizado correctamente";
         }
     

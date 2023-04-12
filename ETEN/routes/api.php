@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RecetaController;
@@ -19,17 +20,17 @@ use App\Http\Controllers\UsuarioController;
 */
 
 
-Route::get ("recetas/VerReceta/{nombreReceta}",[RecetaController::class, "VerReceta"]);
-Route::get ("recetas/BuscarReceta/{titulo}",[RecetaController::class, "BuscarReceta"]);
-Route::get ("recetas/RecetasUsuario/{id}",[UsuarioController::class, "RecetasUsuario"]);
-Route::get ("ofertas/ObtenerOfertas",[OfertaController::class, "ObtenerOfertas"]);
+Route::get("recetas/VerReceta/{nombreReceta}", [RecetaController::class, "VerReceta"]);
+Route::get("recetas/BuscarReceta/{titulo}", [RecetaController::class, "BuscarReceta"]);
+Route::get("recetas/RecetasUsuario/{id}", [UsuarioController::class, "RecetasUsuario"]);
+Route::get("ofertas/ObtenerOfertas", [OfertaController::class, "ObtenerOfertas"]);
 
 
-Route::post ("usuarios/CrearUsuario",[UsuarioController::class, "CrearUsuario"]);
-Route::post ("usuarios/login",[UsuarioController::class, "login"]);
-Route::post ("usuarios/Registro",[UsuarioController::class, "Registro"]);
+Route::post("usuarios/CrearUsuario", [UsuarioController::class, "CrearUsuario"]);
+Route::post("usuarios/Registro", [UsuarioController::class, "Registro"]);
+Route::post("usuarios/login", [UsuarioController::class, "login"]);
 
-Route::put ("usuarios/ActualizarDatosUsuario",[UsuarioController::class, "ActualizarDatosUsuario"]);
-Route::put ("recetas/updateEstadoReceta", [RecetaController::class, "updateEstadoReceta"]);
+Route::post('login', [AuthController::class, 'login']);
 
-
+Route::put("usuarios/ActualizarDatosUsuario", [UsuarioController::class, "ActualizarDatosUsuario"]);
+Route::put("recetas/updateEstadoReceta", [RecetaController::class, "updateEstadoReceta"]);
