@@ -12,7 +12,7 @@ class Oferta extends Model
     use HasFactory, SoftDeletes;
 
     // Relacion con la tabla de usuarios
-    public function visualizaciones(): MorphToMany {
-        return $this->morphToMany(Usuario::class);
+    public function visualizaciones() {
+        return $this->belongsToMany(Usuario::class);
     }
 }

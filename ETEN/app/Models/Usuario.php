@@ -12,13 +12,13 @@ class Usuario extends Model
     use HasFactory, SoftDeletes;
 
     // Relacion con la tabla de recetas
-    public function favoritas(): MorphToMany {
-        return $this->morphToMany(Receta::class);
+    public function favoritas() {
+        return $this->belongsToMany(Receta::class);
     }
 
     // Relacion con la tabla de ofertas
-    public function ofertas(): MorphToMany {
-        return $this->morphToMany(Oferta::class);
+    public function ofertas() {
+        return $this->belongsToMany(Oferta::class);
     }
 
 }

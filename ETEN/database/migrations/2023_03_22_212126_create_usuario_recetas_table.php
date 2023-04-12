@@ -19,7 +19,7 @@ return new class extends Migration
 
             $table->primary(['id_usuario', 'id_receta']);
             $table->foreign('id_usuario')->references('id')->on('usuarios');
-            $table->foreign('id_receta')->references('id')->on('recetas');
+            $table->foreign('id_receta')->references('id')->on('recetas')->onDelete('cascade');
         });
     }
 

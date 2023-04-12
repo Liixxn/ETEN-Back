@@ -19,17 +19,17 @@ use App\Http\Controllers\UsuarioController;
 */
 
 
-Routes::get ("recetas/VerReceta/{nombreReceta}",[RecetaController::class, "VerReceta"]);
-Routes::get ("recetas/BuscarReceta/{titulo}",[RecetaController::class, "BuscarReceta"]);
-Routes::get ("recetas/RecetasUsuario/{id}",[UsuarioController::class, "RecetasUsuario"]);
-Routes::get ("ofertas/ObtenerOfertas",[OfertaController::class, "ObtenerOfertas"]);
+Route::get ("recetas/VerReceta/{nombreReceta}",[RecetaController::class, "VerReceta"]);
+Route::get ("recetas/BuscarReceta/{titulo}",[RecetaController::class, "BuscarReceta"]);
+Route::get ("recetas/RecetasUsuario/{id}",[UsuarioController::class, "RecetasUsuario"]);
+Route::get ("ofertas/ObtenerOfertas",[OfertaController::class, "ObtenerOfertas"]);
 
 
-Routes::post ("usuarios/CrearUsuario",[UsuarioController::class, "CrearUsuario"]);
-Routes::post ("usuarios/login",[UsuarioController::class, "login"]);
-Routes::post ("usuarios/Registro",[UsuarioController::class, "Registro"]);
+Route::post ("usuarios/CrearUsuario",[UsuarioController::class, "CrearUsuario"]);
+Route::post ("usuarios/login",[UsuarioController::class, "login"]);
+Route::post ("usuarios/Registro",[UsuarioController::class, "Registro"]);
 
-Ruotes::put ("usuarios/ActualizarDatosUsuario",[UsuarioController::class, "ActualizarDatosUsuario"]);
-Routes::put ("recetas/updateEstadoReceta", [RecetaController::class, "updateEstadoReceta"]);
+Route::put ("usuarios/ActualizarDatosUsuario",[UsuarioController::class, "ActualizarDatosUsuario"]);
+Route::put ("recetas/updateEstadoReceta", [RecetaController::class, "updateEstadoReceta"]);
 
 

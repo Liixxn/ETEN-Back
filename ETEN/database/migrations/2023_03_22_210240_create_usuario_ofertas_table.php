@@ -19,8 +19,8 @@ return new class extends Migration
             $table->softDeletes();
 
             $table->primary(['id_usuario', 'id_oferta']);
-            $table->foreign('id_usuario')->references('id')->on('usuarios');
-            $table->foreign('id_oferta')->references('id')->on('ofertas');
+            $table->foreign('id_usuario')->references('id')->on('usuarios')->onDelete('cascade');
+            $table->foreign('id_oferta')->references('id')->on('ofertas')->onDelete('cascade');
 
         });
     }

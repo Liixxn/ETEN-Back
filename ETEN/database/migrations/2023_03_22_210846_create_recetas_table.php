@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('recetas', function (Blueprint $table) {
             $table->id('id');
-            $table->bigInteger('id_categoria')->unsigned();
             $table->string('categoria');
             $table->string('titulo');
             $table->text('descripcion');
@@ -23,6 +22,8 @@ return new class extends Migration
             $table->string('comensales')->nullable();
             $table->string('dificultad')->nullable();
             $table->boolean('activo')->default(True);
+            $table->float('sentimiento_pos')->nullable();
+            $table->float('sentimiento_neg')->nullable();
 
             $table->timestamps();
             $table->softDeletes();

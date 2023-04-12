@@ -12,16 +12,17 @@ class Receta extends Model
 {
     use HasFactory, SoftDeletes;
 
+
+    public function favoritas() {
+        return $this->belongsToMany(Usuario::class);
+    }
+
+
     // Relacion con la tabla ingredientes
-    public function ingredientes():  MorphToMany{
-        return $this->morphToMany(Ingrediente::class);
+    public function ingredientes():  HasMany{
+        return $this->hasMany(Ingrediente::class);
     }
 
-    // Relacion con la tabla comentarios
-    public function comentarios(): HasMany {
-        return $this->hasMany(comentario::class);
-
-    }
 }
 
 
