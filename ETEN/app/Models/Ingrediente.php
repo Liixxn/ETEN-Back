@@ -11,10 +11,7 @@ class Ingrediente extends Model
 {
     use HasFactory, SoftDeletes;
 
-
     public function recetas(): BelongsTo{
         return $this->belongsTo(Receta::class);
     }
-
-
 }

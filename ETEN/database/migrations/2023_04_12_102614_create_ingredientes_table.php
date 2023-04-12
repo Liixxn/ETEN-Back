@@ -19,7 +19,6 @@ return new class extends Migration
             $table->softDeletes();
 
             $table->foreign('id_receta')->references('id')->on('recetas')->onDelete('cascade');
-
         });
     }
 
