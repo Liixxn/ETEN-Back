@@ -12,6 +12,8 @@ class Usuario extends Model
     use HasFactory, SoftDeletes;
 
     // Relacion con la tabla de recetas
+
+
     public function favoritas() {
         return $this->belongsToMany(Receta::class);
     }

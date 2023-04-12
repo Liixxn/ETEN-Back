@@ -42,6 +42,8 @@ class UsuarioController extends Controller
         $usuario->apellidos = $request->apellidos;
         $usuario->email = $request->email;
         $usuario->password = $request->password;
+        $usuario->subscripcion = 0;
+        $usuario->es_administrador = $request->es_administrador;
         $usuario->save();
         return "Usuario registrado";
     }
@@ -51,7 +53,7 @@ class UsuarioController extends Controller
     public function ActualizarDatosUsuario(Request $request)
     {
         // Obtener el usuario a actualizar
-        $usuario = User::findOrFail($id);
+        $usuario = User::findOrFail($request->id);
 
         // Actualizar los datos del usuario
         $usuario->name = $request->input('name');
@@ -61,7 +63,7 @@ class UsuarioController extends Controller
         $user->save();
         return "Usuario actualizado correctamente";
         }
-    
+
 
     public function RecetasUsuario($id)
     {
@@ -70,6 +72,12 @@ class UsuarioController extends Controller
         return "Recetas del usuario: $recetas";
     }
 
+
+    public function obtenerUsuarios()
+    {
+        $usuarios = Usuario::get();
+        return json_encode($usuarios);
+    }
 
 
 }
