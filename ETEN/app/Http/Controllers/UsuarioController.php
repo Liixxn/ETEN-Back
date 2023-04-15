@@ -24,17 +24,22 @@ class UsuarioController extends Controller
 
     public function login(Request $request)
     {
-        $usuario = Usuario::where("email", $request->email)->first();
-        if ($usuario) {
-            if ($usuario->password == $request->password) {
-                return "Usuario logueado";
+        $usuario = Usuario::where('email', $request->email)->first();
+
+        if (is_null($usuario)) {
+            return "Usuario no encontrado";
+        } else {
+
+            if (Hash::check($request->password, $usuario->password)) {
+                return "Usuario encontrado";
+
             } else {
                 return "Contraseña incorrecta";
             }
-        } else {
-            return "Usuario no encontrado";
         }
     }
+
+    
 
     public function Registro(Request $request)
     {
