@@ -22,6 +22,8 @@ class Receta extends Model
     public function ingredientes():  HasMany{
         return $this->hasMany(Ingrediente::class);
     }
+    
+   
 
 }
 

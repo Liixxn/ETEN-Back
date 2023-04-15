@@ -53,14 +53,14 @@ class UsuarioController extends Controller
     public function ActualizarDatosUsuario(Request $request)
     {
         // Obtener el usuario a actualizar
-        $usuario = User::findOrFail($request->id);
+        $usuario = Usuario::findOrFail($request->id);
 
         // Actualizar los datos del usuario
         $usuario->name = $request->input('name');
         $usuario->email = $request->input('email');
         $usuario->password = bcrypt($request->input('password'));
 
-        $user->save();
+        $usuario->save();
         return "Usuario actualizado correctamente";
         }
 

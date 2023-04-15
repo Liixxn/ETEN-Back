@@ -10,7 +10,7 @@ use App\Http\Controllers\UsuarioController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
-|--------------------------------------------------------------------------
+|---------------------------------------------------------------------------
 |
 | Here is where you can register API routes for your application. These
 | routes are loaded by the RouteServiceProvider and all of them will
@@ -30,7 +30,7 @@ Route::post ("usuarios/obtenerUsuarios",[UsuarioController::class, "obtenerUsuar
 Route::post ("usuarios/CrearUsuario",[UsuarioController::class, "CrearUsuario"]);
 Route::post ("usuarios/login",[UsuarioController::class, "login"]);
 Route::post ("usuarios/Registro",[UsuarioController::class, "Registro"]);
-
+Route:: get ("recetas/ObtenerRecetas", [RecetaController::class, "ObtenerRecetas"]);
 Route::put ("usuarios/ActualizarDatosUsuario",[UsuarioController::class, "ActualizarDatosUsuario"]);
 Route::put ("recetas/updateEstadoReceta", [RecetaController::class, "updateEstadoReceta"]);
 
