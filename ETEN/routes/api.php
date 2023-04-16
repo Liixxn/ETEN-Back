@@ -23,7 +23,7 @@ Route::get ("recetas/VerReceta/{nombreReceta}",[RecetaController::class, "VerRec
 Route::get ("recetas/BuscarReceta/{titulo}",[RecetaController::class, "BuscarReceta"]);
 Route::get ("recetas/RecetasUsuario/{id}",[UsuarioController::class, "RecetasUsuario"]);
 Route::get ("ofertas/ObtenerOfertas",[OfertaController::class, "ObtenerOfertas"]);
-
+Route::get("recetas/ObtenerRecetas" ,[RecetaController::class, "ObtenerRecetas"]);
 
 
 Route::post ("usuarios/obtenerUsuarios",[UsuarioController::class, "obtenerUsuarios"]);
