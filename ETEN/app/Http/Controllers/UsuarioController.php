@@ -46,22 +46,23 @@ class UsuarioController extends Controller
     {
 
         $usuario = new Usuario();
-        $usuario->nombre = $request->nombre;
-        $usuario->img = null;
-        $usuario->email = $request->email;
-        $usuario->password = $request->password;
-        $usuario->subscripcion = $request->subscripcion;
-        $usuario->es_administrador = $request->es_administrador;
         // Variable que comprueba si existe el email
         $usuarioEncontrado = Usuario::where('email', $request->email)->first();
         // Si no se ha encontrado un usuario, guarda al usuario en la base de datos
         if (is_null($usuarioEncontrado)) {
+
+            $usuario->nombre = $request->nombre;
+            $usuario->img = null;
+            $usuario->email = $request->email;
+            $usuario->password = sha1($request->password);
+            $usuario->subscripcion = $request->subscripcion;
+            $usuario->es_administrador = $request->es_administrador;
             $usuario->email = $request->email;
             $usuario->save();
 
         } else {
             //Si el usuario existe, el email se sustituye por este mensaje para luego comprobarlo en front
-            $usuario->email = "Email existente";
+            $usuario->email = "Existente";
         }
         return json_encode($usuario);
     }
