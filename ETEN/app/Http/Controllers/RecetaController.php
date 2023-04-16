@@ -31,9 +31,10 @@ class RecetaController extends Controller
         $receta->save();
         return "Receta actualizada";
     }
+
     public function ObtenerRecetas(){
         $recetas = Receta::all(['titulo', 'img']);
-        return $recetas;
+        return view('recetas', compact('recetas'));
     }
 
 
