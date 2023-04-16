@@ -30,7 +30,9 @@ Route::post ("usuarios/obtenerUsuarios",[UsuarioController::class, "obtenerUsuar
 Route::post ("usuarios/CrearUsuario",[UsuarioController::class, "CrearUsuario"]);
 Route::post ("usuarios/login",[UsuarioController::class, "login"]);
 Route::post ("usuarios/Registro",[UsuarioController::class, "Registro"]);
-Route:: get ("recetas/ObtenerRecetas", [RecetaController::class, "ObtenerRecetas"]);
+
+Route::post ("recetas/ObtenerRecetas", [RecetaController::class, "ObtenerRecetas"]);
+
 Route::put ("usuarios/ActualizarDatosUsuario",[UsuarioController::class, "ActualizarDatosUsuario"]);
 Route::put ("recetas/updateEstadoReceta", [RecetaController::class, "updateEstadoReceta"]);
 

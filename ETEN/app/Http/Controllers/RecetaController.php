@@ -31,10 +31,11 @@ class RecetaController extends Controller
         $receta->save();
         return "Receta actualizada";
     }
-    public function ObtenerRecetas(){
-        $recetas = Receta::all();
+
+
+    public function ObtenerRecetas()
+    {
+        $recetas = Receta::get();
         return $recetas;
     }
-
-
 }
