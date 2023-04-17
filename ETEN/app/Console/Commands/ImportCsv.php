@@ -4,13 +4,14 @@ namespace App\Console\Commands;
 
 use App\Models\Oferta;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
+use League\Csv\Reader;
 
 class ImportCsv extends Command
 {
     protected $signature = 'import:csv';
 
-    protected $description = 'Importar ofertas desde archivo CSV concatenado';
+    protected $description = 'Importar ofertas desde archivo CSV';
 
     public function __construct()
     {
@@ -19,19 +20,32 @@ class ImportCsv extends Command
 
     public function handle()
     {
-        $csvFilePath = storage_path('app/public/ofertas_concatenadas.csv');
-        $csvData = file_get_contents($csvFilePath);
+        $csvFile = base_path('ofertas/ofertas_concatenadas.csv');
+        $csv = Reader::createFromPath($csvFile, 'r');
+        $csv->setDelimiter(';');
+        $csv->setHeaderOffset(0);
+        $records = $csv->getRecords();
 
-        $rows = array_map('str_getcsv', explode("\n", $csvData));
-        $header = array_shift($rows);
+        DB::beginTransaction();
 
-        foreach ($rows as $row) {
-            if (count($row) === count($header)) {
-                $ofertaData = array_combine($header, $row);
-                Oferta::create($ofertaData);
+        try {
+            foreach ($records as $record) {
+                $data = new Oferta();
+                $data->titulo = $record['titulo'];
+                $data->price = $record['price'];
+                $data->price_less = $record['price_less'];
+                $data->url_img = $record['url_img'];
+                $data->url = $record['url'];
+                $data->save();
             }
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollback();
+            $this->error('Error al importar el CSV: ' . $e->getMessage());
+            return;
         }
 
-        $this->info('Archivo CSV importado exitosamente.');
+        $this->info('CSV importado correctamente!');
     }
 }
