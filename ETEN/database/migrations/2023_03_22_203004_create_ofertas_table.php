@@ -13,21 +13,17 @@ return new class extends Migration
     {
         #hay que cambiar la base de datos, los campos
         Schema::create('ofertas', function (Blueprint $table) {
-            /*$table->id('id');
+            $table->id('id');
             $table->string('nombreOferta');
-            $table->float('precioOferta');
+            $table->float('precioActual');
+            $table->float('precioAnterior');
             $table->string('imagenOferta')->nullable();
-            $table->string('supermercado');
+            $table->string('urlOferta');
+            $table->string('supermercado')->nullable();
+            $table->string('categoria')->nullable();
             $table->timestamps();
             $table->softDeletes();
-            */
-            $table->id();
-            $table->string('titulo');
-            $table->decimal('price', 10, 2);
-            $table->decimal('price_less', 10, 2);
-            $table->string('url_img');
-            $table->string('url');
-            $table->timestamps();
+
         });
     }
 
