@@ -9,10 +9,20 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Oferta extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory;
+
+    protected $table = 'ofertas';
 
     // Relacion con la tabla de usuarios
     public function visualizaciones() {
         return $this->belongsToMany(Usuario::class);
     }
+
+    protected $fillable = [
+        'titulo',
+        'price',
+        'price_less',
+        'url_img',
+        'url'
+    ];
 }

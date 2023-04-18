@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
-
 use App\Models\Usuario;
 
 class UsuarioController extends Controller
 {
+
     public function CrearUsuario(Request $request)
     {
         $usuario = new Usuario();
@@ -23,29 +24,47 @@ class UsuarioController extends Controller
 
     public function login(Request $request)
     {
-        $usuario = Usuario::where("email", $request->email)->first();
-        if ($usuario) {
-            if ($usuario->password == $request->password) {
-                return "Usuario logueado";
-            } else {
-                return "Contraseña incorrecta";
-            }
+        $usuario = new Usuario();
+        $usuarioEncontrado = Usuario::where('email', $request->email)->first();
+        if (is_null($usuarioEncontrado)) {
+            $usuario->nombre = "Usuario no encontrado";
         } else {
-            return "Usuario no encontrado";
+
+            if (sha1($request->password) == $usuarioEncontrado->password) {
+                $usuario = $usuarioEncontrado;
+
+            } else {
+                $usuario->nombre = "Contrasenia incorrecta";
+            }
         }
+        return json_encode($usuario);
     }
+
+
 
     public function Registro(Request $request)
     {
+
         $usuario = new Usuario();
-        $usuario->nombre = $request->nombre;
-        $usuario->apellidos = $request->apellidos;
-        $usuario->email = $request->email;
-        $usuario->password = $request->password;
-        $usuario->subscripcion = 0;
-        $usuario->es_administrador = $request->es_administrador;
-        $usuario->save();
-        return "Usuario registrado";
+        // Variable que comprueba si existe el email
+        $usuarioEncontrado = Usuario::where('email', $request->email)->first();
+        // Si no se ha encontrado un usuario, guarda al usuario en la base de datos
+        if (is_null($usuarioEncontrado)) {
+
+            $usuario->nombre = $request->nombre;
+            $usuario->img = null;
+            $usuario->email = $request->email;
+            $usuario->password = sha1($request->password);
+            $usuario->subscripcion = $request->subscripcion;
+            $usuario->es_administrador = $request->es_administrador;
+            $usuario->email = $request->email;
+            $usuario->save();
+
+        } else {
+            //Si el usuario existe, el email se sustituye por este mensaje para luego comprobarlo en front
+            $usuario->email = "Existente";
+        }
+        return json_encode($usuario);
     }
 
 
