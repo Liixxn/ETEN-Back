@@ -20,18 +20,13 @@ use App\Http\Controllers\UsuarioController;
 */
 
 
-Route::get ("recetas/VerReceta/{nombreReceta}",[RecetaController::class, "VerReceta"]);
-Route::get ("recetas/BuscarReceta/{titulo}",[RecetaController::class, "BuscarReceta"]);
-Route::get ("recetas/RecetasUsuario/{id}",[UsuarioController::class, "RecetasUsuario"]);
+
 Route::get ("ofertas/ObtenerOfertas",[OfertaController::class, "ObtenerOfertas"]);
-Route::get("recetas/ObtenerRecetas" ,[RecetaController::class, "ObtenerRecetas"]);
+Route::get ("recetas/ObtenerRecetas" ,[RecetaController::class, "ObtenerRecetas"]);
 
-Route::post("recetas/ObtenerRecetaIngrediente", [IngredienteController::class, "obtenerRecetaIngrediente"]);
-
+Route::post ("recetas/ObtenerRecetaIngrediente", [IngredienteController::class, "obtenerRecetaIngrediente"]);
 Route::post ("receta/ingredientes",[IngredienteController::class, "obtenerIngredientes"]);
 
-Route::post ("usuarios/obtenerUsuarios",[UsuarioController::class, "obtenerUsuarios"]);
-Route::post ("usuarios/CrearUsuario",[UsuarioController::class, "CrearUsuario"]);
 Route::post ("usuarios/login",[UsuarioController::class, "login"]);
 Route::post ("usuarios/Registro",[UsuarioController::class, "Registro"]);
 
@@ -39,7 +34,15 @@ Route::post ("recetas/ObtenerRecetas", [RecetaController::class, "ObtenerRecetas
 Route::get ("recetas/ObtenerUnaReceta/{id}", [RecetaController::class, "ObtenerUnaReceta"]);
 
 
-Route::put ("usuarios/ActualizarDatosUsuario",[UsuarioController::class, "ActualizarDatosUsuario"]);
-Route::put ("recetas/updateEstadoReceta", [RecetaController::class, "updateEstadoReceta"]);
+
+//todavia no se usa
+//Route::get ("recetas/VerReceta/{nombreReceta}",[RecetaController::class, "VerReceta"]);
+//Route::get ("recetas/BuscarReceta/{titulo}",[RecetaController::class, "BuscarReceta"]);
+//Route::get ("recetas/RecetasUsuario/{id}",[UsuarioController::class, "RecetasUsuario"]);
+
+//Route::post ("usuarios/obtenerUsuarios",[UsuarioController::class, "obtenerUsuarios"]);
+
+//Route::put ("usuarios/ActualizarDatosUsuario",[UsuarioController::class, "ActualizarDatosUsuario"]);
+//Route::put ("recetas/updateEstadoReceta", [RecetaController::class, "updateEstadoReceta"]);
 
 
