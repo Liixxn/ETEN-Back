@@ -44,5 +44,3 @@ Route::get ("recetas/ObtenerUnaReceta/{id}", [RecetaController::class, "ObtenerU
 
 //Route::put ("usuarios/ActualizarDatosUsuario",[UsuarioController::class, "ActualizarDatosUsuario"]);
 //Route::put ("recetas/updateEstadoReceta", [RecetaController::class, "updateEstadoReceta"]);
-
-
