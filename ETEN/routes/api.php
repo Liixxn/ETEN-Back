@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\IngredienteController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RecetaController;
@@ -25,6 +26,7 @@ Route::get ("recetas/RecetasUsuario/{id}",[UsuarioController::class, "RecetasUsu
 Route::get ("ofertas/ObtenerOfertas",[OfertaController::class, "ObtenerOfertas"]);
 Route::get("recetas/ObtenerRecetas" ,[RecetaController::class, "ObtenerRecetas"]);
 
+Route::post("recetas/ObtenerRecetaIngrediente", [IngredienteController::class, "obtenerRecetaIngrediente"]);
 
 Route::post ("usuarios/obtenerUsuarios",[UsuarioController::class, "obtenerUsuarios"]);
 Route::post ("usuarios/CrearUsuario",[UsuarioController::class, "CrearUsuario"]);

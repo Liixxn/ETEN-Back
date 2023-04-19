@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Ingrediente;
 use Illuminate\Http\Request;
 
 //importacion de los modelos
@@ -35,7 +36,8 @@ class RecetaController extends Controller
 
     public function ObtenerRecetas()
     {
-        $recetas = Receta::get();
+        $recetas = Receta::get(['id', 'titulo', 'img'])->toArray();
         return $recetas;
     }
+
 }
