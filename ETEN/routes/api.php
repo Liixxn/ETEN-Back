@@ -35,6 +35,8 @@ Route::post ("usuarios/login",[UsuarioController::class, "login"]);
 Route::post ("usuarios/Registro",[UsuarioController::class, "Registro"]);
 
 Route::post ("recetas/ObtenerRecetas", [RecetaController::class, "ObtenerRecetas"]);
+Route::get ("recetas/ObtenerUnaReceta/{id}", [RecetaController::class, "ObtenerUnaReceta"]);
+
 
 Route::put ("usuarios/ActualizarDatosUsuario",[UsuarioController::class, "ActualizarDatosUsuario"]);
 Route::put ("recetas/updateEstadoReceta", [RecetaController::class, "updateEstadoReceta"]);

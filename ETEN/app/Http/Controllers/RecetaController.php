@@ -38,4 +38,11 @@ class RecetaController extends Controller
         $recetas = Receta::get();
         return $recetas;
     }
+
+    
+    public function ObtenerUnaReceta($id)
+    {
+        $receta = Receta::find($id);
+        return $receta;
+    }
 }
