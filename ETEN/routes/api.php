@@ -26,6 +26,7 @@ Route::get ("recetas/RecetasUsuario/{id}",[UsuarioController::class, "RecetasUsu
 Route::get ("ofertas/ObtenerOfertas",[OfertaController::class, "ObtenerOfertas"]);
 Route::get("recetas/ObtenerRecetas" ,[RecetaController::class, "ObtenerRecetas"]);
 
+Route::post("recetas/ObtenerRecetaIngrediente", [IngredienteController::class, "obtenerRecetaIngrediente"]);
 
 Route::post ("receta/ingredientes",[IngredienteController::class, "obtenerIngredientes"]);
 
