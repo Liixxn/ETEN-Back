@@ -40,4 +40,11 @@ class RecetaController extends Controller
         return $recetas;
     }
 
+    public function obtenerRecetaId($id) {
+
+        $recetaEncontrada = Receta::find($id);
+
+        return json_encode($recetaEncontrada);
+
+    }
 }

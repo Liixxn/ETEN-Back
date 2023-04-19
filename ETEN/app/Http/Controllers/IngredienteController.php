@@ -8,9 +8,9 @@ use Illuminate\Http\Request;
 class IngredienteController extends Controller
 {
 
-    public function obtenerRecetaIngrediente($nombreIngrediente) {
+    public function obtenerRecetaIngrediente(Request $request) {
 
-        $ingredienteReceta = Ingrediente::where("nombre_ingrediente", 'ilike', $nombreIngrediente)->get();
+        $ingredienteReceta = Ingrediente::where("nombre_ingrediente", 'LIKE', '%'.$request->nombre_ingrediente.'%')->get();
 
         return json_encode($ingredienteReceta);
 
