@@ -32,7 +32,6 @@ class UsuarioController extends Controller
 
             if (sha1($request->password) == $usuarioEncontrado->password) {
                 $usuario = $usuarioEncontrado;
-
             } else {
                 $usuario->nombre = "Contrasenia incorrecta";
             }
@@ -59,7 +58,6 @@ class UsuarioController extends Controller
             $usuario->es_administrador = $request->es_administrador;
             $usuario->email = $request->email;
             $usuario->save();
-
         } else {
             //Si el usuario existe, el email se sustituye por este mensaje para luego comprobarlo en front
             $usuario->email = "Existente";
@@ -81,7 +79,7 @@ class UsuarioController extends Controller
 
         $usuario->save();
         return "Usuario actualizado correctamente";
-        }
+    }
 
 
     public function RecetasUsuario($id)
@@ -99,4 +97,9 @@ class UsuarioController extends Controller
     }
 
 
+    public function ObtenerUnUsuario(Request $request)
+    {
+        $usuario = Usuario::find($request->id);
+        return json_encode($usuario);
+    }
 }

@@ -29,6 +29,7 @@ Route::post ("receta/ingredientes",[IngredienteController::class, "obtenerIngred
 
 Route::post ("usuarios/login",[UsuarioController::class, "login"]);
 Route::post ("usuarios/Registro",[UsuarioController::class, "Registro"]);
+Route::post ("usuarios/ObtenerUnUsuario",[UsuarioController::class, "ObtenerUnUsuario"]);
 
 Route::post ("recetas/ObtenerRecetas", [RecetaController::class, "ObtenerRecetas"]);
 Route::get ("recetas/ObtenerUnaReceta/{id}", [RecetaController::class, "ObtenerUnaReceta"]);
