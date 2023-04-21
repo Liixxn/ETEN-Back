@@ -69,16 +69,18 @@ class UsuarioController extends Controller
 
     public function ActualizarDatosUsuario(Request $request)
     {
-        // Obtener el usuario a actualizar
-        $usuario = Usuario::findOrFail($request->id);
 
-        // Actualizar los datos del usuario
-        $usuario->name = $request->input('name');
-        $usuario->email = $request->input('email');
-        $usuario->password = bcrypt($request->input('password'));
+        $usuarioEncontrado = Usuario::find($request->id);
 
-        $usuario->save();
-        return "Usuario actualizado correctamente";
+        $usuarioEncontrado->nombre = $request->nombre;
+        $usuarioEncontrado->email = $request->email;
+        $usuarioEncontrado->password = sha1($request->password);
+        $usuarioEncontrado->subscripcion = $request->subscripcion;
+        $usuarioEncontrado->img = $request->img;
+        $usuarioEncontrado->es_administrador = $request->es_administrador;
+        $usuarioEncontrado->save();
+
+        return json_encode($usuarioEncontrado);
     }
 
 
@@ -101,5 +103,22 @@ class UsuarioController extends Controller
     {
         $usuario = Usuario::find($request->id);
         return json_encode($usuario);
+    }
+
+
+    public function ComprobarContrasena(Request $request)
+    {
+        $mensaje = 'mensaje';
+        $usuarioEncontrado = Usuario::find($request->id);
+        if (!is_null($usuarioEncontrado)) {
+            if (sha1($request->password) == $usuarioEncontrado->password) {
+                $mensaje = $usuarioEncontrado->password;
+            } else {
+                $mensaje = 'incorrecto';
+            }
+        } else {
+            $mensaje = "Usuario no encontrado";
+        }
+        return json_encode($mensaje);
     }
 }
