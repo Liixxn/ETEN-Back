@@ -118,6 +118,11 @@
       <path value="$PROJECT_DIR$/ETEN/vendor/psr/http-message" />
       <path value="$PROJECT_DIR$/ETEN/vendor/psr/event-dispatcher" />
       <path value="$PROJECT_DIR$/ETEN/vendor/psr/log" />
+      <path value="$PROJECT_DIR$/ETEN/vendor/stella-maris/clock" />
+      <path value="$PROJECT_DIR$/ETEN/vendor/lcobucci/clock" />
+      <path value="$PROJECT_DIR$/ETEN/vendor/lcobucci/jwt" />
+      <path value="$PROJECT_DIR$/ETEN/vendor/tymon/jwt-auth" />
+      <path value="$PROJECT_DIR$/ETEN/vendor/psr/clock" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="8.1" />

@@ -24,20 +24,22 @@ class UsuarioController extends Controller
 
     public function login(Request $request)
     {
-        $usuario = new Usuario();
+
+        $credentials = $request->only(['email', 'password']);
+
         $usuarioEncontrado = Usuario::where('email', $request->email)->first();
         if (is_null($usuarioEncontrado)) {
-            $usuario->nombre = "Usuario no encontrado";
+            return response()->json(['error' => 'Not found'], 401);
         } else {
 
             if (sha1($request->password) == $usuarioEncontrado->password) {
-                $usuario = $usuarioEncontrado;
+                $token = auth()->login($usuarioEncontrado);
 
             } else {
-                $usuario->nombre = "Contrasenia incorrecta";
+                return response()->json(['error' => 'Unauthorized'], 401);
             }
         }
-        return json_encode($usuario);
+        return $this->respondWithToken($token);
     }
 
 
@@ -98,5 +100,25 @@ class UsuarioController extends Controller
         return json_encode($usuarios);
     }
 
+
+
+
+
+
+    /**
+     * Get the token array structure.
+     *
+     * @param  string $token
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    protected function respondWithToken($token)
+    {
+        return response()->json([
+            'access_token' => $token,
+            'token_type' => 'bearer',
+            'expires_in' => auth()->factory()->getTTL() * 60
+        ]);
+    }
 
 }
