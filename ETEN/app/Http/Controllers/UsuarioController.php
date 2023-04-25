@@ -100,9 +100,6 @@ class UsuarioController extends Controller
 
 
 
-
-
-
     /**
      * Get the token array structure.
      *

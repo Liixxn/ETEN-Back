@@ -40,7 +40,7 @@ Route::get ("recetas/ObtenerUnaReceta/{id}", [RecetaController::class, "ObtenerU
 //Route::get ("recetas/BuscarReceta/{titulo}",[RecetaController::class, "BuscarReceta"]);
 //Route::get ("recetas/RecetasUsuario/{id}",[UsuarioController::class, "RecetasUsuario"]);
 
-//Route::post ("usuarios/obtenerUsuarios",[UsuarioController::class, "obtenerUsuarios"]);
+Route::post ("usuarios/obtenerUsuarios",[UsuarioController::class, "obtenerUsuarios"]);
 
 //Route::put ("usuarios/ActualizarDatosUsuario",[UsuarioController::class, "ActualizarDatosUsuario"]);
 //Route::put ("recetas/updateEstadoReceta", [RecetaController::class, "updateEstadoReceta"]);
