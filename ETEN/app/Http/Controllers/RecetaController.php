@@ -46,4 +46,14 @@ class RecetaController extends Controller
         $receta = Receta::find($id);
         return $receta;
     }
+
+    public function ObtenerRecetasPorId(Request $request)
+    {
+        $ids = $request->ids;
+        $recetas = Receta::whereIn('id', $ids)->get();
+
+        return $recetas;
+
+    }
+
 }

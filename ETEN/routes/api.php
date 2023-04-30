@@ -33,6 +33,7 @@ Route::post ("usuarios/Registro",[UsuarioController::class, "Registro"]);
 Route::post ("recetas/ObtenerRecetas", [RecetaController::class, "ObtenerRecetas"]);
 Route::get ("recetas/ObtenerUnaReceta/{id}", [RecetaController::class, "ObtenerUnaReceta"]);
 
+Route::post("recetas/ObtenerRecetasPorId", [RecetaController::class, "ObtenerRecetasPorId"]);
 
 
 //todavia no se usa

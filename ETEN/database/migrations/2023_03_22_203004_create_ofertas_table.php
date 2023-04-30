@@ -19,7 +19,6 @@ return new class extends Migration
             $table->float('precioAnterior');
             $table->string('imagenOferta')->nullable();
             $table->string('urlOferta');
-            $table->string('supermercado')->nullable();
             $table->string('categoria')->nullable();
             $table->timestamps();
             $table->softDeletes();
