@@ -17,8 +17,11 @@ class IngredienteController extends Controller
 
         $ingredientes = $request->ingredientes;
 
-        $receta = Ingrediente::whereIn('nombre_ingrediente', 'LIKE', $ingredientes)->get();
-
+        $receta = Ingrediente::where(function($query) use ($ingredientes) {
+            foreach($ingredientes as $ingrediente) {
+                $query->orWhere('nombre_ingrediente', 'LIKE', "%{$ingrediente}%");
+            }
+        })->get();
 
 
         //$searchString = '%' . implode('%', $ingredientes) . '%';
