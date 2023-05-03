@@ -42,7 +42,7 @@ class Usuario extends Authenticable implements JWTSubject
      */
     public function getJWTCustomClaims()
     {
-        return [];
+        return ["usuario"=>$this];
     }
 
 }

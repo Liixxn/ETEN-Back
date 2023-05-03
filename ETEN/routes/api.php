@@ -38,7 +38,7 @@ Route::post ("recetas/ObtenerRecetas", [RecetaController::class, "ObtenerRecetas
 Route::get ("recetas/ObtenerUnaReceta/{id}", [RecetaController::class, "ObtenerUnaReceta"]);
 
 
-
+Route::post ("usuarios/verificacionConToken",[UsuarioController::class, "verificacionConToken"]);
 //todavia no se usa
 //Route::get ("recetas/VerReceta/{nombreReceta}",[RecetaController::class, "VerReceta"]);
 //Route::get ("recetas/BuscarReceta/{titulo}",[RecetaController::class, "BuscarReceta"]);

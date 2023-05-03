@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use App\Models\Usuario;
+use Exception;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class UsuarioController extends Controller
 {
@@ -31,7 +33,7 @@ class UsuarioController extends Controller
         } else {
 
             if (sha1($request->password) == $usuarioEncontrado->password) {
-                $usuario = $usuarioEncontrado;
+                $token = auth()->login($usuarioEncontrado);
             } else {
                 $usuario->nombre = "Contrasenia incorrecta";
             }
@@ -138,4 +140,27 @@ class UsuarioController extends Controller
         }
         return json_encode($mensaje);
     }
+
+    protected function verificacionConToken(Request $request)
+    {
+
+        if ($request->hasHeader('Authorization')) {
+            // La cabecera de autorización no está presente
+            $token = $request->bearerToken();
+            try {
+                if ($token = JWTAuth::parseToken()->authenticate()) {
+                    return response()->json(['Verificado' => 'Autorizado'], 200);
+                }
+            } catch (Exception $e) {
+                if ($e instanceof \Tymon\JWTAuth\Exceptions\TokenInvalidException) {
+                    return response()->json(['error' => 'TokenInvalidException'], 401);
+                } else if ($e instanceof \Tymon\JWTAuth\Exceptions\TokenExpiredException) {
+                    return response()->json(['error' => 'TokenExpiredException'], 401);
+                } else if ($e instanceof \Tymon\JWTAuth\Exceptions\JWTException) {
+                    return response()->json(['error' => 'JWTException'], 401);
+                } else {
+                    return response()->json(['error' => 'error'], 401);
+                }
+            }
+        }
 }
