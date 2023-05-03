@@ -46,4 +46,10 @@ class RecetaController extends Controller
         $receta = Receta::find($id);
         return $receta;
     }
+
+    public function ObtenerRecetasPorCategoria($num_categoria)
+    {
+        $recetas = Receta::where("categoria", $num_categoria)->get(['id', 'titulo', 'img'])->toArray();
+        return $recetas;
+    }
 }
