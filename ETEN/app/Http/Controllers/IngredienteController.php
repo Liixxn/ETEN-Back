@@ -16,8 +16,8 @@ class IngredienteController extends Controller
 
         $queryWhere = "1=1";
         foreach ($ingredientes as $ingrediente) {
-            $ingredienteS = "%{$ingrediente}%";
-            $queryWhere .= " AND (SELECT count(1) FROM ingredientes wHERE nombre_ingrediente LIKE '[$ingredienteS]' and id_receta=recetas.id) > 0";
+            $ingredienteS = "%".$ingrediente."%";
+            $queryWhere .= " AND (SELECT count(1) FROM ingredientes wHERE nombre_ingrediente LIKE '$ingredienteS' and id_receta=recetas.id) > 0";
 
         }
         $recetas = DB::table('recetas')->whereRaw($queryWhere)->get();
