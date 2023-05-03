@@ -5,38 +5,24 @@ namespace App\Http\Controllers;
 use App\Models\Ingrediente;
 use App\Models\Receta;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class IngredienteController extends Controller
 {
 
     public function obtenerRecetaIngrediente(Request $request) {
 
-        //$ingredientes = $request->ingredientes;
-        //$ingredienteReceta = Ingrediente::whereIn("nombre_ingrediente", 'LIKE', '%'.$ingredientes.'%')->get();
-        //$recetas = Receta::whereIn('id', $ids)->get();
-
         $ingredientes = $request->ingredientes;
 
-        $receta = Ingrediente::where(function($query) use ($ingredientes) {
-            foreach($ingredientes as $ingrediente) {
-                $query->orWhere('nombre_ingrediente', 'LIKE', "%{$ingrediente}%");
-            }
-        })->get();
+        $queryWhere = "1=1";
+        foreach ($ingredientes as $ingrediente) {
+            $ingredienteS = "%{$ingrediente}%";
+            $queryWhere .= " AND (SELECT count(1) FROM ingredientes wHERE nombre_ingrediente LIKE '[$ingredienteS]' and id_receta=recetas.id) > 0";
 
+        }
+        $recetas = DB::table('recetas')->whereRaw($queryWhere)->get();
 
-        //$searchString = '%' . implode('%', $ingredientes) . '%';
-
-//        $receta = [];
-//
-//        for ($i=0; $i < count($ingredientes); $i++) {
-//            $searchString = '%' . $ingredientes[$i] . '%';
-//            $ingredienteReceta = Ingrediente::where('nombre_ingrediente', 'LIKE', $searchString)->get();
-//            array_push($receta, $ingredienteReceta);
-//        }
-
-
-
-        return json_encode($receta);
+        return json_encode($recetas);
 
     }
     public function obtenerIngredientes(Request $request){

@@ -30,7 +30,7 @@ class UsuarioController extends Controller
             $usuario->nombre = "Usuario no encontrado";
         } else {
 
-            if (sha1($request->password) == $usuarioEncontrado->password) {
+            if (hash('sha2556', $request->password) == $usuarioEncontrado->password) {
                 $usuario = $usuarioEncontrado;
 
             } else {
@@ -54,7 +54,7 @@ class UsuarioController extends Controller
             $usuario->nombre = $request->nombre;
             $usuario->img = null;
             $usuario->email = $request->email;
-            $usuario->password = sha1($request->password);
+            $usuario->password = hash('sha256', $request->password);
             $usuario->subscripcion = $request->subscripcion;
             $usuario->es_administrador = $request->es_administrador;
             $usuario->email = $request->email;
