@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use App\Models\Usuario;
+use Exception;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class UsuarioController extends Controller
 {
@@ -24,20 +26,22 @@ class UsuarioController extends Controller
 
     public function login(Request $request)
     {
-        $usuario = new Usuario();
+
+        $credentials = $request->only(['email', 'password']);
+
         $usuarioEncontrado = Usuario::where('email', $request->email)->first();
         if (is_null($usuarioEncontrado)) {
-            $usuario->nombre = "Usuario no encontrado";
+            return response()->json(['error' => 'Not found'], 401);
         } else {
 
-            if (sha1($request->password) == $usuarioEncontrado->password) {
-                $usuario = $usuarioEncontrado;
+            if (hash('sha256', $request->password) == $usuarioEncontrado->password) {
+                $token = auth()->login($usuarioEncontrado);
 
             } else {
-                $usuario->nombre = "Contrasenia incorrecta";
+                return response()->json(['error' => 'Unauthorized'], 401);
             }
         }
-        return json_encode($usuario);
+        return $this->respondWithToken($token);
     }
 
 
@@ -54,12 +58,11 @@ class UsuarioController extends Controller
             $usuario->nombre = $request->nombre;
             $usuario->img = null;
             $usuario->email = $request->email;
-            $usuario->password = sha1($request->password);
+            $usuario->password = hash('sha256', $request->password);
             $usuario->subscripcion = $request->subscripcion;
             $usuario->es_administrador = $request->es_administrador;
             $usuario->email = $request->email;
             $usuario->save();
-
         } else {
             //Si el usuario existe, el email se sustituye por este mensaje para luego comprobarlo en front
             $usuario->email = "Existente";
@@ -71,17 +74,19 @@ class UsuarioController extends Controller
 
     public function ActualizarDatosUsuario(Request $request)
     {
-        // Obtener el usuario a actualizar
-        $usuario = User::findOrFail($request->id);
 
-        // Actualizar los datos del usuario
-        $usuario->name = $request->input('name');
-        $usuario->email = $request->input('email');
-        $usuario->password = bcrypt($request->input('password'));
+        $usuarioEncontrado = Usuario::find($request->id);
 
-        $usuario->save();
-        return "Usuario actualizado correctamente";
-        }
+        $usuarioEncontrado->nombre = $request->nombre;
+        $usuarioEncontrado->email = $request->email;
+        $usuarioEncontrado->password = sha1($request->password);
+        $usuarioEncontrado->subscripcion = $request->subscripcion;
+        $usuarioEncontrado->img = $request->img;
+        $usuarioEncontrado->es_administrador = $request->es_administrador;
+        $usuarioEncontrado->save();
+
+        return json_encode($usuarioEncontrado);
+    }
 
 
     public function RecetasUsuario($id)
@@ -99,4 +104,67 @@ class UsuarioController extends Controller
     }
 
 
+    /**
+     * Get the token array structure.
+     *
+     * @param  string $token
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    protected function respondWithToken($token)
+    {
+        return response()->json([
+            'access_token' => $token,
+            'token_type' => 'bearer',
+            'expires_in' => auth()->factory()->getTTL() * 60
+        ]);
+    }
+
+
+    public function ObtenerUnUsuario(Request $request)
+    {
+        $usuario = Usuario::find($request->id);
+        return json_encode($usuario);
+    }
+
+
+    public function ComprobarContrasena(Request $request)
+    {
+        $mensaje = 'mensaje';
+        $usuarioEncontrado = Usuario::find($request->id);
+        if (!is_null($usuarioEncontrado)) {
+            if (sha1($request->password) == $usuarioEncontrado->password) {
+                $mensaje = $usuarioEncontrado->password;
+            } else {
+                $mensaje = 'incorrecto';
+            }
+        } else {
+            $mensaje = "Usuario no encontrado";
+        }
+        return json_encode($mensaje);
+    }
+
+    protected function verificacionConToken(Request $request)
+    {
+
+        if ($request->hasHeader('Authorization')) {
+            // La cabecera de autorización no está presente
+            $token = $request->bearerToken();
+            try {
+                if ($token = JWTAuth::parseToken()->authenticate()) {
+                    return response()->json(['Verificado' => 'Autorizado'], 200);
+                }
+            } catch (Exception $e) {
+                if ($e instanceof \Tymon\JWTAuth\Exceptions\TokenInvalidException) {
+                    return response()->json(['error' => 'TokenInvalidException'], 401);
+                } else if ($e instanceof \Tymon\JWTAuth\Exceptions\TokenExpiredException) {
+                    return response()->json(['error' => 'TokenExpiredException'], 401);
+                } else if ($e instanceof \Tymon\JWTAuth\Exceptions\JWTException) {
+                    return response()->json(['error' => 'JWTException'], 401);
+                } else {
+                    return response()->json(['error' => 'error'], 401);
+                }
+            }
+        }
+    }
 }
