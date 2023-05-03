@@ -19,8 +19,8 @@ class RecetaController extends Controller
 
     public function BuscarReceta($titulo)
     {
-        $receta = Receta::where("titulo", $titulo)->first();
-        return "Receta: $titulo";
+        $receta = Receta::where("titulo", 'LIKE', '%'. $titulo.'%')->get();
+        return  $receta;    
     }
 
 
