@@ -38,6 +38,7 @@ Route::put ("usuarios/ActualizarDatosUsuario",[UsuarioController::class, "Actual
 Route::post ("recetas/ObtenerRecetas", [RecetaController::class, "ObtenerRecetas"]);
 Route::get ("recetas/ObtenerUnaReceta/{id}", [RecetaController::class, "ObtenerUnaReceta"]);
 
+Route::post("recetas/ObtenerRecetasPorId", [RecetaController::class, "ObtenerRecetasPorId"]);
 
 Route::post ("usuarios/verificacionConToken",[UsuarioController::class, "verificacionConToken"]);
 //todavia no se usa

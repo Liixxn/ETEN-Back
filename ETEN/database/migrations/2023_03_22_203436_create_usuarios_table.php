@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id('id');
             $table->string('nombre');
             $table->string('email', 50);
-            $table->string('password', 50);
+            $table->text('password', 100);
             $table->boolean('subscripcion');
             $table->text('img')->nullable();
             $table->boolean('es_administrador')->default(false);

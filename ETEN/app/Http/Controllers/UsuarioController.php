@@ -26,19 +26,22 @@ class UsuarioController extends Controller
 
     public function login(Request $request)
     {
-        $usuario = new Usuario();
+
+        $credentials = $request->only(['email', 'password']);
+
         $usuarioEncontrado = Usuario::where('email', $request->email)->first();
         if (is_null($usuarioEncontrado)) {
-            $usuario->nombre = "Usuario no encontrado";
+            return response()->json(['error' => 'Not found'], 401);
         } else {
 
-            if (sha1($request->password) == $usuarioEncontrado->password) {
+            if (hash('sha256', $request->password) == $usuarioEncontrado->password) {
                 $token = auth()->login($usuarioEncontrado);
+
             } else {
-                $usuario->nombre = "Contrasenia incorrecta";
+                return response()->json(['error' => 'Unauthorized'], 401);
             }
         }
-        return json_encode($usuario);
+        return $this->respondWithToken($token);
     }
 
 
@@ -55,7 +58,7 @@ class UsuarioController extends Controller
             $usuario->nombre = $request->nombre;
             $usuario->img = null;
             $usuario->email = $request->email;
-            $usuario->password = sha1($request->password);
+            $usuario->password = hash('sha256', $request->password);
             $usuario->subscripcion = $request->subscripcion;
             $usuario->es_administrador = $request->es_administrador;
             $usuario->email = $request->email;

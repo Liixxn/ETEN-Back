@@ -52,4 +52,13 @@ class RecetaController extends Controller
         $recetas = Receta::where("categoria", $num_categoria)->get(['id', 'titulo', 'img'])->toArray();
         return $recetas;
     }
+
+    public function ObtenerRecetasPorId(Request $request)
+    {
+        $ids = $request->ids;
+        $recetas = Receta::whereIn('id', $ids)->get();
+
+        return $recetas;
+
+    }
 }
