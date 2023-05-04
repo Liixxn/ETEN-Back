@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RecetaController;
 use App\Http\Controllers\OfertaController;
 use App\Http\Controllers\UsuarioController;
-
+use App\Models\Receta;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,11 +27,17 @@ Route::get ("recetas/ObtenerRecetasPorCategoria/{num_categoria}" ,[RecetaControl
 
 Route::post ("recetas/ObtenerRecetaIngrediente", [IngredienteController::class, "obtenerRecetaIngrediente"]);
 Route::post ("receta/ingredientes",[IngredienteController::class, "obtenerIngredientes"]);
+//Para agregar y eliminar de favoritos
+Route::post ("recetas/GuardarRecetaFavoritos",[RecetaController::class, "GuardarRecetaFavoritos"]);
+Route::post ("recetas/EliminarRecetaFavoritos",[RecetaController::class, "EliminarRecetaFavoritos"]);
+Route::post ("recetas/ObtenerIdRecetasFavoritas",[RecetaController::class, "ObtenerIdRecetasFavoritas"]);
+
 
 Route::post ("usuarios/login",[UsuarioController::class, "login"]);
 Route::post ("usuarios/Registro",[UsuarioController::class, "Registro"]);
 Route::post ("usuarios/ObtenerUnUsuario",[UsuarioController::class, "ObtenerUnUsuario"]);
 Route::post ("usuarios/ComprobarContrasena",[UsuarioController::class, "ComprobarContrasena"]);
+
 
 Route::put ("usuarios/ActualizarDatosUsuario",[UsuarioController::class, "ActualizarDatosUsuario"]);
 
