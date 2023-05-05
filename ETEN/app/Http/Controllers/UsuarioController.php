@@ -36,7 +36,6 @@ class UsuarioController extends Controller
 
             if (hash('sha256', $request->password) == $usuarioEncontrado->password) {
                 $token = auth()->login($usuarioEncontrado);
-
             } else {
                 return response()->json(['error' => 'Unauthorized'], 401);
             }
@@ -147,12 +146,17 @@ class UsuarioController extends Controller
     protected function verificacionConToken(Request $request)
     {
 
+        $user = JWTAuth::user();
+        return $user;
+        /*
         if ($request->hasHeader('Authorization')) {
             // La cabecera de autorización no está presente
-            $token = $request->bearerToken();
+            $token = $request->bearerToken();s
             try {
                 if ($token = JWTAuth::parseToken()->authenticate()) {
-                    return response()->json(['Verificado' => 'Autorizado'], 200);
+                    $user = JWTAuth::parseToken($token)->authenticate();
+                    //return response()->json(['Verificado' => 'Autorizado'], 200);
+                    return $user;
                 }
             } catch (Exception $e) {
                 if ($e instanceof \Tymon\JWTAuth\Exceptions\TokenInvalidException) {
@@ -166,5 +170,37 @@ class UsuarioController extends Controller
                 }
             }
         }
+        */
+    }
+
+    protected function verificacionConTokenAdmin(Request $request)
+    {
+        $admin = JWTAuth::user();
+        return $admin;
+        /*
+        if ($request->hasHeader('Authorization')) {
+            // La cabecera de autorización no está presente
+            $token = $request->bearerToken();
+            try {
+                $user = JWTAuth::parseToken($token)->authenticate();
+                if ($token = JWTAuth::parseToken()->authenticate() && $user->es_administrador == 1) {
+                    //return response()->json(['Verificado' => 'Autorizado'], 200);
+                    return $user;
+                }else{
+                    return response()->json(['error' => 'NO ES ADMIN'], 401);
+                }
+            } catch (Exception $e) {
+                if ($e instanceof \Tymon\JWTAuth\Exceptions\TokenInvalidException) {
+                    return response()->json(['error' => 'TokenInvalidException'], 401);
+                } else if ($e instanceof \Tymon\JWTAuth\Exceptions\TokenExpiredException) {
+                    return response()->json(['error' => 'TokenExpiredException'], 401);
+                } else if ($e instanceof \Tymon\JWTAuth\Exceptions\JWTException) {
+                    return response()->json(['error' => 'JWTException'], 401);
+                } else {
+                    return response()->json(['error' => 'error'], 401);
+                }
+            }
+        }
+        */
     }
 }
