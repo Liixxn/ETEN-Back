@@ -18,10 +18,42 @@ class RecetaController extends Controller
     }
 
 
-    public function BuscarReceta($titulo)
+    public function BuscarReceta(Request $request)
     {
-        $receta = Receta::where("titulo", 'LIKE', '%'. $titulo.'%')->get();
-        return  $receta;    
+
+        $recetaNumero = Receta::get();
+        $tamnio = $recetaNumero->count();
+
+        $mostrar = 12;
+
+        if ($request->titulo != "") {
+
+            $titulo = $request->titulo;
+
+            $recetasBuscar = Receta::where("titulo", 'LIKE', '%'. $titulo .'%');
+
+            $mostrar = $recetasBuscar->count();
+
+            if ($recetasBuscar->count()>0) {
+
+                $tamnio = $recetasBuscar->count();
+
+                $offset = ($request->pagina - 1) * 12;
+
+                $recetas = $recetasBuscar->select('id', 'titulo', 'img')->offset($offset)->limit(12)->get();
+
+                return [$recetas, $tamnio, sizeof($recetas)];
+            }
+
+        }
+
+        $offset = ($request->pagina - 1) * 12;
+
+        $recetas = Receta::select('id', 'titulo', 'img')->offset($offset)->limit(12)->get();
+
+
+        return [$recetas, $tamnio, $mostrar];
+
     }
 
 
@@ -34,10 +66,10 @@ class RecetaController extends Controller
     }
 
 
-    public function ObtenerRecetas()
+    public function ObtenerRecetas(Request $request)
     {
-        $recetas = Receta::get(['id', 'titulo', 'img'])->toArray();
-        return $recetas;
+        $receta = Receta::get(['id', 'titulo', 'img']);
+        return json_encode($receta);
     }
 
 
@@ -61,4 +93,7 @@ class RecetaController extends Controller
         return $recetas;
 
     }
+
+
+
 }

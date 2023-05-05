@@ -22,7 +22,7 @@ use App\Http\Controllers\UsuarioController;
 
 
 Route::get ("ofertas/ObtenerOfertas",[OfertaController::class, "ObtenerOfertas"]);
-Route::get ("recetas/ObtenerRecetas" ,[RecetaController::class, "ObtenerRecetas"]);
+//Route::get ("recetas/ObtenerRecetas" ,[RecetaController::class, "ObtenerRecetas"]);
 Route::get ("recetas/ObtenerRecetasPorCategoria/{num_categoria}" ,[RecetaController::class, "ObtenerRecetasPorCategoria"]);
 
 Route::post ("recetas/ObtenerRecetaIngrediente", [IngredienteController::class, "obtenerRecetaIngrediente"]);
@@ -36,6 +36,7 @@ Route::post ("usuarios/ComprobarContrasena",[UsuarioController::class, "Comproba
 Route::put ("usuarios/ActualizarDatosUsuario",[UsuarioController::class, "ActualizarDatosUsuario"]);
 
 Route::post ("recetas/ObtenerRecetas", [RecetaController::class, "ObtenerRecetas"]);
+
 Route::get ("recetas/ObtenerUnaReceta/{id}", [RecetaController::class, "ObtenerUnaReceta"]);
 
 Route::post("recetas/ObtenerRecetasPorId", [RecetaController::class, "ObtenerRecetasPorId"]);
@@ -43,9 +44,15 @@ Route::post("recetas/ObtenerRecetasPorId", [RecetaController::class, "ObtenerRec
 Route::post ("usuarios/verificacionConToken",[UsuarioController::class, "verificacionConToken"]);
 //todavia no se usa
 //Route::get ("recetas/VerReceta/{nombreReceta}",[RecetaController::class, "VerReceta"]);
-Route::get ("recetas/BuscarReceta/{titulo}",[RecetaController::class, "BuscarReceta"]);
+
+
+// Buscador titulo
+Route::post ("recetas/BuscarReceta",[RecetaController::class, "BuscarReceta"]);
+
+
 //Route::get ("recetas/RecetasUsuario/{id}",[UsuarioController::class, "RecetasUsuario"]);
 
 Route::post ("usuarios/obtenerUsuarios",[UsuarioController::class, "obtenerUsuarios"]);
 
 //Route::put ("recetas/updateEstadoReceta", [RecetaController::class, "updateEstadoReceta"]);
+
