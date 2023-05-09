@@ -7,7 +7,8 @@ use Illuminate\Http\Request;
 
 //importacion de los modelos
 use App\Models\Receta;
-
+use App\Models\Usuario;
+use App\Models\UsuarioReceta;
 
 class RecetaController extends Controller
 {
@@ -20,8 +21,8 @@ class RecetaController extends Controller
 
     public function BuscarReceta($titulo)
     {
-        $receta = Receta::where("titulo", 'LIKE', '%'. $titulo.'%')->get();
-        return  $receta;    
+        $receta = Receta::where("titulo", 'LIKE', '%' . $titulo . '%')->get();
+        return  $receta;
     }
 
 
@@ -57,8 +58,60 @@ class RecetaController extends Controller
     {
         $ids = $request->ids;
         $recetas = Receta::whereIn('id', $ids)->get();
-
         return $recetas;
+    }
 
+
+
+    public function GuardarRecetaFavoritos(Request $request)
+    {
+        $mensaje = 'mensaje';
+        $usuarioEncontrado = Usuario::find($request->id_user);
+        $recetaEncontrada = Receta::find($request->id_receta);
+
+        if (!is_null($usuarioEncontrado) && !is_null($recetaEncontrada)) {
+            $favoritoEncontrado = UsuarioReceta::where('id_usuario', $request->id_user)->where('id_receta', $request->id_receta);
+            if (!is_null($favoritoEncontrado)) {
+                $nuevoFavorito = new UsuarioReceta();
+                $nuevoFavorito->id_usuario = $request->id_user;
+                $nuevoFavorito->id_receta = $request->id_receta;
+                $nuevoFavorito->save();
+            } else {
+                $favoritoEncontrado = UsuarioReceta::where('id_usuario', $request->id_user)->where('id_receta', $request->id_receta)->restore();
+            }
+            $mensaje = "Receta Guardada en favoritos";
+        } else {
+            $mensaje = "Error en los datos";
+        }
+        return json_encode($mensaje);
+    }
+
+    public function EliminarRecetaFavoritos(Request $request)
+    {
+        $mensaje = 'mensaje';
+        $usuarioEncontrado = Usuario::find($request->id_user);
+        $recetaEncontrada = Receta::find($request->id_receta);
+        if (!is_null($usuarioEncontrado) && !is_null($recetaEncontrada)) {
+            $favoritoEncontrado = UsuarioReceta::where('id_usuario', $request->id_user)->where('id_receta', $request->id_receta);
+            if (!is_null($favoritoEncontrado)) {
+                UsuarioReceta::where('id_usuario', $request->id_user)->where('id_receta', $request->id_receta)->delete();
+                $mensaje = 'Receta Eliminada de favoritos';
+            } else {
+                $mensaje = 'Este favorito no existe';
+            }
+        } else {
+            $mensaje = "Error en los datos";
+        }
+        return json_encode($mensaje);
+    }
+
+    public function ObtenerIdRecetasFavoritas(Request $request)
+    {
+        $idsFavoritos = [0, 1, 2];
+        $usuarioEncontrado = Usuario::find($request->id_user);
+        if (!is_null($usuarioEncontrado)) {
+            $idsFavoritos = UsuarioReceta::where('id_usuario', $request->id_user)->pluck('id_receta')->toArray();
+        }
+        return json_encode($idsFavoritos);
     }
 }
