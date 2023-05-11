@@ -78,7 +78,7 @@ class UsuarioController extends Controller
 
         $usuarioEncontrado->nombre = $request->nombre;
         $usuarioEncontrado->email = $request->email;
-        $usuarioEncontrado->password = sha1($request->password);
+        $usuarioEncontrado->password = hash('sha256', $request->password);
         $usuarioEncontrado->subscripcion = $request->subscripcion;
         $usuarioEncontrado->img = $request->img;
         $usuarioEncontrado->es_administrador = $request->es_administrador;
@@ -120,10 +120,12 @@ class UsuarioController extends Controller
     }
 
 
-    public function ObtenerUnUsuario(Request $request)
+    public function ObtenerUnUsuario()
     {
-        $usuario = Usuario::find($request->id);
+        $usuario = JWTAuth::user();
         return json_encode($usuario);
+        //$usuario = Usuario::find($request->id);
+        //return json_encode($usuario);
     }
 
 
@@ -132,7 +134,7 @@ class UsuarioController extends Controller
         $mensaje = 'mensaje';
         $usuarioEncontrado = Usuario::find($request->id);
         if (!is_null($usuarioEncontrado)) {
-            if (sha1($request->password) == $usuarioEncontrado->password) {
+            if (hash('sha256', $request->password) == $usuarioEncontrado->password) {
                 $mensaje = $usuarioEncontrado->password;
             } else {
                 $mensaje = 'incorrecto';

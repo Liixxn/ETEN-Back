@@ -35,7 +35,7 @@ Route::post ("recetas/ObtenerIdRecetasFavoritas",[RecetaController::class, "Obte
 
 Route::post("usuarios/login", [UsuarioController::class, "login"]);
 Route::post("usuarios/Registro", [UsuarioController::class, "Registro"]);
-Route::post("usuarios/ObtenerUnUsuario", [UsuarioController::class, "ObtenerUnUsuario"]);
+Route::get("usuarios/ObtenerUnUsuario", [UsuarioController::class, "ObtenerUnUsuario"])->middleware(App\Http\Middleware\UserMiddleware::class);;
 Route::post("usuarios/ComprobarContrasena", [UsuarioController::class, "ComprobarContrasena"]);
 
 
