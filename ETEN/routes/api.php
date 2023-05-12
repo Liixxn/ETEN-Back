@@ -48,4 +48,5 @@ Route::get ("recetas/BuscarReceta/{titulo}",[RecetaController::class, "BuscarRec
 
 Route::post ("usuarios/obtenerUsuarios",[UsuarioController::class, "obtenerUsuarios"]);
 
+Route::post("ofertas/sumarVisita", [OfertaController::class, "sumarVisita"]);
 //Route::put ("recetas/updateEstadoReceta", [RecetaController::class, "updateEstadoReceta"]);
