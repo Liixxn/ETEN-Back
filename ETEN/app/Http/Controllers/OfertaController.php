@@ -14,7 +14,6 @@ class OfertaController extends Controller
         return json_encode($ofertas);
     }
 
-<<<<<<< Updated upstream
     public function sumarVisita(Request $request)
     {
         $oferta = Oferta::findOrFail($request->id); 
@@ -31,7 +30,7 @@ class OfertaController extends Controller
             $oferta->save();
         }
     }    
-=======
+    
     public function obtenerOfertasPorCategoria(&num_categoria, &pagina)
     {
         $ofertas = Oferta::get(['id', 'titulo', 'img', 
@@ -53,6 +52,5 @@ class OfertaController extends Controller
 
         return [$ofertas, $size];
     }
->>>>>>> Stashed changes
     
 }
