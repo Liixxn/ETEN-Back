@@ -25,12 +25,12 @@ Route::get("ofertas/ObtenerOfertas", [OfertaController::class, "ObtenerOfertas"]
 Route::get("recetas/ObtenerRecetas", [RecetaController::class, "ObtenerRecetas"]);
 Route::get("recetas/ObtenerRecetasPorCategoria/{num_categoria}", [RecetaController::class, "ObtenerRecetasPorCategoria"]);
 
-Route::post ("recetas/ObtenerRecetaIngrediente", [IngredienteController::class, "obtenerRecetaIngrediente"]);
-Route::post ("receta/ingredientes",[IngredienteController::class, "obtenerIngredientes"]);
+Route::post("recetas/ObtenerRecetaIngrediente", [IngredienteController::class, "obtenerRecetaIngrediente"]);
+Route::post("receta/ingredientes", [IngredienteController::class, "obtenerIngredientes"]);
 //Para agregar y eliminar de favoritos
-Route::post ("recetas/GuardarRecetaFavoritos",[RecetaController::class, "GuardarRecetaFavoritos"]);
-Route::post ("recetas/EliminarRecetaFavoritos",[RecetaController::class, "EliminarRecetaFavoritos"]);
-Route::post ("recetas/ObtenerIdRecetasFavoritas",[RecetaController::class, "ObtenerIdRecetasFavoritas"]);
+Route::post("recetas/GuardarRecetaFavoritos", [RecetaController::class, "GuardarRecetaFavoritos"]);
+Route::post("recetas/EliminarRecetaFavoritos", [RecetaController::class, "EliminarRecetaFavoritos"]);
+Route::post("recetas/ObtenerIdRecetasFavoritas", [RecetaController::class, "ObtenerIdRecetasFavoritas"]);
 
 
 Route::post("usuarios/login", [UsuarioController::class, "login"]);
@@ -39,7 +39,7 @@ Route::get("usuarios/ObtenerUnUsuario", [UsuarioController::class, "ObtenerUnUsu
 Route::post("usuarios/ComprobarContrasena", [UsuarioController::class, "ComprobarContrasena"]);
 
 
-Route::put ("usuarios/ActualizarDatosUsuario",[UsuarioController::class, "ActualizarDatosUsuario"]);
+Route::put("usuarios/ActualizarDatosUsuario", [UsuarioController::class, "ActualizarDatosUsuario"]);
 
 Route::post("recetas/ObtenerRecetas", [RecetaController::class, "ObtenerRecetas"]);
 Route::get("recetas/ObtenerUnaReceta/{id}", [RecetaController::class, "ObtenerUnaReceta"]);
@@ -51,6 +51,7 @@ Route::post("usuarios/verificacionConTokenAdmin", [UsuarioController::class, "ve
 //todavia no se usa
 //Route::get ("recetas/VerReceta/{nombreReceta}",[RecetaController::class, "VerReceta"]);
 Route::get("recetas/BuscarReceta/{titulo}", [RecetaController::class, "BuscarReceta"]);
+Route::get("recetas/VerificarRecetaFavorita/{id_receta}", [RecetaController::class, "VerificarRecetaFavorita"])->middleware(App\Http\Middleware\UserMiddleware::class);
 //Route::get ("recetas/RecetasUsuario/{id}",[UsuarioController::class, "RecetasUsuario"]);
 
 Route::post("usuarios/obtenerUsuarios", [UsuarioController::class, "obtenerUsuarios"]);

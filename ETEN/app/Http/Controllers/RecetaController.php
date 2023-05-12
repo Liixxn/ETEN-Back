@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Models\Receta;
 use App\Models\Usuario;
 use App\Models\UsuarioReceta;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class RecetaController extends Controller
 {
@@ -24,7 +25,16 @@ class RecetaController extends Controller
         $receta = Receta::where("titulo", 'LIKE', '%' . $titulo . '%')->get();
         return  $receta;
     }
-
+    public function VerificarRecetaFavorita($id_receta)
+    {
+        $user = JWTAuth::user();
+        $favoritoEncontrado = UsuarioReceta::where('id_usuario', $user->id)->where('id_receta', $id_receta)->count();
+        if ($favoritoEncontrado == 0) {
+            return json_encode(false);
+        } else {
+            return json_encode(true);
+        }
+    }
 
     public function updateEstadoReceta(Request $request)
     {
@@ -70,16 +80,17 @@ class RecetaController extends Controller
         $recetaEncontrada = Receta::find($request->id_receta);
 
         if (!is_null($usuarioEncontrado) && !is_null($recetaEncontrada)) {
-            $favoritoEncontrado = UsuarioReceta::where('id_usuario', $request->id_user)->where('id_receta', $request->id_receta);
-            if (!is_null($favoritoEncontrado)) {
+            $favoritoEncontrado = UsuarioReceta::where('id_usuario', $request->id_user)->where('id_receta', $request->id_receta)->withTrashed()->count();
+            if ($favoritoEncontrado == 0) {
                 $nuevoFavorito = new UsuarioReceta();
                 $nuevoFavorito->id_usuario = $request->id_user;
                 $nuevoFavorito->id_receta = $request->id_receta;
                 $nuevoFavorito->save();
+                $mensaje = "Receta Guardada en favoritos nueva";
             } else {
                 $favoritoEncontrado = UsuarioReceta::where('id_usuario', $request->id_user)->where('id_receta', $request->id_receta)->restore();
+                $mensaje = "Receta Guardada en favoritos actualizada";
             }
-            $mensaje = "Receta Guardada en favoritos";
         } else {
             $mensaje = "Error en los datos";
         }
