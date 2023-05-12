@@ -7,12 +7,14 @@ use App\Models\Oferta;
 
 class OfertaController extends Controller
 {
-    public function ObtenerOfertas()
+    public function obtenerTodasOfertas(Request $request)
     {
-        $oferta = Oferta::getAll();
-        return "Receta: $oferta";
+        $ofertas = Oferta::get(['id', 'titulo', 'img', 
+        'precioActual', 'precioAnterior', 'urlOferta']);
+        return json_encode($ofertas);
     }
 
+<<<<<<< Updated upstream
     public function sumarVisita(Request $request)
     {
         $oferta = Oferta::findOrFail($request->id); 
@@ -29,5 +31,28 @@ class OfertaController extends Controller
             $oferta->save();
         }
     }    
+=======
+    public function obtenerOfertasPorCategoria(&num_categoria, &pagina)
+    {
+        $ofertas = Oferta::get(['id', 'titulo', 'img', 
+        'precioActual', 'precioAnterior', 'urlOferta']);
+
+        $size = $ofertas->count();
+
+        $cantOfertas = 20;
+
+        $listaOfertas = Oferta::where('categoria', $num_categoria);
+
+        $size = $listaOfertas->count();
+
+        &offset = ($pagina - 1) * $cantOfertas;
+
+        $ofertas = $cantOfertas->select('id', 'titulo', 'img', 
+        'precioActual', 'precioAnterior', 'urlOferta')->offset($offset)
+        ->limit(20)->get();
+
+        return [$ofertas, $size];
+    }
+>>>>>>> Stashed changes
     
 }
