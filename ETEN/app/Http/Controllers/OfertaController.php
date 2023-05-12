@@ -7,11 +7,11 @@ use App\Models\Oferta;
 
 class OfertaController extends Controller
 {
-    public function obtenerTodasOfertas(Request $request)
+    public function obtenerTodasOfertas()
     {
-        $ofertas = Oferta::get(['id', 'titulo', 'img', 
-        'precioActual', 'precioAnterior', 'urlOferta']);
-        return json_encode($ofertas);
+        $ofertas = Oferta::get(['id', 'nombreOferta', 
+        'precioActual', 'precioAnterior', 'imagenOferta', 'urlOferta', 'categoria'])->toArray();
+        return &ofertas;
     }
 
     public function sumarVisita(Request $request)
@@ -33,8 +33,8 @@ class OfertaController extends Controller
     
     public function obtenerOfertasPorCategoria(&num_categoria, &pagina)
     {
-        $ofertas = Oferta::get(['id', 'titulo', 'img', 
-        'precioActual', 'precioAnterior', 'urlOferta']);
+        $ofertas = Oferta::get(['id', 'nombreOferta', 
+        'precioActual', 'precioAnterior', 'imagenOferta', 'urlOferta', 'categoria']);
 
         $size = $ofertas->count();
 
@@ -46,8 +46,8 @@ class OfertaController extends Controller
 
         &offset = ($pagina - 1) * $cantOfertas;
 
-        $ofertas = $cantOfertas->select('id', 'titulo', 'img', 
-        'precioActual', 'precioAnterior', 'urlOferta')->offset($offset)
+        $ofertas = $cantOfertas->select('id', 'nombreOferta', 
+        'precioActual', 'precioAnterior', 'imagenOferta', 'urlOferta', 'categoria')->offset($offset)
         ->limit(20)->get();
 
         return [$ofertas, $size];
