@@ -139,11 +139,11 @@ class RecetaController extends Controller
                 $nuevoFavorito->id_usuario = $request->id_user;
                 $nuevoFavorito->id_receta = $request->id_receta;
                 $nuevoFavorito->save();
-                $mensaje = "Receta Guardada en favoritos nueva";
+                
             } else {
                 $favoritoEncontrado = UsuarioReceta::where('id_usuario', $request->id_user)->where('id_receta', $request->id_receta)->restore();
-                $mensaje = "Receta Guardada en favoritos actualizada";
             }
+            $mensaje = "Receta Guardada en favoritos";
         } else {
             $mensaje = "Error en los datos";
         }
