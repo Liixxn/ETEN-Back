@@ -21,9 +21,9 @@ use App\Models\Receta;
 
 
 
-Route::get("ofertas/ObtenerOfertas", [OfertaController::class, "ObtenerOfertas"]);
-Route::get("recetas/ObtenerRecetas", [RecetaController::class, "ObtenerRecetas"]);
-Route::get("recetas/ObtenerRecetasPorCategoria/{num_categoria}", [RecetaController::class, "ObtenerRecetasPorCategoria"]);
+Route::get ("ofertas/ObtenerOfertas",[OfertaController::class, "ObtenerOfertas"]);
+Route::get ("recetas/ObtenerRecetas" ,[RecetaController::class, "ObtenerRecetas"]);
+Route::get ("recetas/ObtenerRecetasPorCategoria/{num_categoria}/{pagina}" ,[RecetaController::class, "ObtenerRecetasPorCategoria"]);
 
 Route::post("recetas/ObtenerRecetaIngrediente", [IngredienteController::class, "obtenerRecetaIngrediente"]);
 Route::post("receta/ingredientes", [IngredienteController::class, "obtenerIngredientes"]);
@@ -50,8 +50,13 @@ Route::post("usuarios/verificacionConToken", [UsuarioController::class, "verific
 Route::post("usuarios/verificacionConTokenAdmin", [UsuarioController::class, "verificacionConTokenAdmin"])->middleware(App\Http\Middleware\AdminMiddleware::class);
 //todavia no se usa
 //Route::get ("recetas/VerReceta/{nombreReceta}",[RecetaController::class, "VerReceta"]);
-Route::get("recetas/BuscarReceta/{titulo}", [RecetaController::class, "BuscarReceta"]);
+
 Route::get("recetas/VerificarRecetaFavorita/{id_receta}", [RecetaController::class, "VerificarRecetaFavorita"])->middleware(App\Http\Middleware\UserMiddleware::class);
+
+// Buscador titulo
+Route::post ("recetas/BuscarReceta",[RecetaController::class, "BuscarReceta"]);
+
+
 //Route::get ("recetas/RecetasUsuario/{id}",[UsuarioController::class, "RecetasUsuario"]);
 
 Route::post("usuarios/obtenerUsuarios", [UsuarioController::class, "obtenerUsuarios"]);

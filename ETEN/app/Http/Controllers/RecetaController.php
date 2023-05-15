@@ -20,11 +20,44 @@ class RecetaController extends Controller
     }
 
 
-    public function BuscarReceta($titulo)
+    public function BuscarReceta(Request $request)
     {
-        $receta = Receta::where("titulo", 'LIKE', '%' . $titulo . '%')->get();
-        return  $receta;
+
+        $recetaNumero = Receta::get();
+        $tamnio = $recetaNumero->count();
+
+        $mostrar = 12;
+
+        if ($request->titulo != "") {
+
+            $titulo = $request->titulo;
+
+            $recetasBuscar = Receta::where("titulo", 'LIKE', '%'. $titulo .'%');
+
+            $mostrar = $recetasBuscar->count();
+
+            if ($recetasBuscar->count()>0) {
+
+                $tamnio = $recetasBuscar->count();
+
+                $offset = ($request->pagina - 1) * 12;
+
+                $recetas = $recetasBuscar->select('id', 'titulo', 'img')->offset($offset)->limit(12)->get();
+
+                return [$recetas, $tamnio, sizeof($recetas)];
+            }
+
+        }
+
+        $offset = ($request->pagina - 1) * 12;
+
+        $recetas = Receta::select('id', 'titulo', 'img')->offset($offset)->limit(12)->get();
+
+
+        return [$recetas, $tamnio, $mostrar];
+
     }
+
     public function VerificarRecetaFavorita($id_receta)
     {
         $user = JWTAuth::user();
@@ -34,7 +67,7 @@ class RecetaController extends Controller
         } else {
             return json_encode(true);
         }
-    }
+      }
 
     public function updateEstadoReceta(Request $request)
     {
@@ -45,10 +78,10 @@ class RecetaController extends Controller
     }
 
 
-    public function ObtenerRecetas()
+    public function ObtenerRecetas(Request $request)
     {
-        $recetas = Receta::get(['id', 'titulo', 'img'])->toArray();
-        return $recetas;
+        $receta = Receta::get(['id', 'titulo', 'img']);
+        return json_encode($receta);
     }
 
 
@@ -58,10 +91,30 @@ class RecetaController extends Controller
         return $receta;
     }
 
-    public function ObtenerRecetasPorCategoria($num_categoria)
+    public function ObtenerRecetasPorCategoria($num_categoria, $pagina)
     {
-        $recetas = Receta::where("categoria", $num_categoria)->get(['id', 'titulo', 'img'])->toArray();
-        return $recetas;
+
+        $recetas = Receta::get(['id', 'titulo', 'img']);
+        $tamanio = $recetas->count();
+
+        $mostrar = 12;
+
+        if ($num_categoria!=0) {
+
+            $recetasResultados = Receta::where("categoria", $num_categoria);
+
+            $tamanio = $recetasResultados->count();
+
+            $offset = ($pagina - 1) * 12;
+
+            $recetas = $recetasResultados->select('id', 'titulo', 'img')->offset($offset)->limit(12)->get();
+
+            return [$recetas, $tamanio];
+
+        }
+
+        return [$recetas, $tamanio];
+
     }
 
     public function ObtenerRecetasPorId(Request $request)
@@ -125,4 +178,7 @@ class RecetaController extends Controller
         }
         return json_encode($idsFavoritos);
     }
+
+
+
 }
