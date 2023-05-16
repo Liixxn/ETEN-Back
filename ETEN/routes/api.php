@@ -20,10 +20,28 @@ use App\Models\Receta;
 */
 
 
+//USUARIOS
+Route::post("usuarios/Registro", [UsuarioController::class, "Registro"]);
 
-Route::get ("ofertas/ObtenerOfertas",[OfertaController::class, "ObtenerOfertas"]);
-Route::get ("recetas/ObtenerRecetas" ,[RecetaController::class, "ObtenerRecetas"]);
-Route::get ("recetas/ObtenerRecetasPorCategoria/{num_categoria}/{pagina}" ,[RecetaController::class, "ObtenerRecetasPorCategoria"]);
+Route::post("usuarios/login", [UsuarioController::class, "login"]);
+
+Route::get("usuarios/ObtenerUnUsuario", [UsuarioController::class, "ObtenerUnUsuario"])->middleware(App\Http\Middleware\UserMiddleware::class);
+
+Route::put("usuarios/ActualizarDatosUsuario", [UsuarioController::class, "ActualizarDatosUsuario"])->middleware(App\Http\Middleware\UserMiddleware::class);
+
+Route::post("usuarios/ComprobarContrasena", [UsuarioController::class, "ComprobarContrasena"])->middleware(App\Http\Middleware\UserMiddleware::class);
+
+Route::get("usuarios/obtenerUsuarios", [UsuarioController::class, "obtenerUsuarios"])->middleware(App\Http\Middleware\AdminMiddleware::class);
+
+
+
+
+
+
+
+//RECETAS
+Route::get("recetas/ObtenerRecetas", [RecetaController::class, "ObtenerRecetas"]);
+Route::get("recetas/ObtenerRecetasPorCategoria/{num_categoria}/{pagina}", [RecetaController::class, "ObtenerRecetasPorCategoria"]);
 
 Route::post("recetas/ObtenerRecetaIngrediente", [IngredienteController::class, "obtenerRecetaIngrediente"]);
 Route::post("receta/ingredientes", [IngredienteController::class, "obtenerIngredientes"]);
@@ -32,33 +50,20 @@ Route::post("recetas/GuardarRecetaFavoritos", [RecetaController::class, "Guardar
 Route::post("recetas/EliminarRecetaFavoritos", [RecetaController::class, "EliminarRecetaFavoritos"]);
 Route::post("recetas/ObtenerIdRecetasFavoritas", [RecetaController::class, "ObtenerIdRecetasFavoritas"]);
 
-
-Route::post("usuarios/login", [UsuarioController::class, "login"]);
-Route::post("usuarios/Registro", [UsuarioController::class, "Registro"]);
-Route::get("usuarios/ObtenerUnUsuario", [UsuarioController::class, "ObtenerUnUsuario"])->middleware(App\Http\Middleware\UserMiddleware::class);;
-Route::post("usuarios/ComprobarContrasena", [UsuarioController::class, "ComprobarContrasena"]);
-
-
-Route::put("usuarios/ActualizarDatosUsuario", [UsuarioController::class, "ActualizarDatosUsuario"]);
-
 Route::post("recetas/ObtenerRecetas", [RecetaController::class, "ObtenerRecetas"]);
 Route::get("recetas/ObtenerUnaReceta/{id}", [RecetaController::class, "ObtenerUnaReceta"]);
 
 Route::post("recetas/ObtenerRecetasPorId", [RecetaController::class, "ObtenerRecetasPorId"]);
 
-Route::post("usuarios/verificacionConToken", [UsuarioController::class, "verificacionConToken"])->middleware(App\Http\Middleware\UserMiddleware::class);
-Route::post("usuarios/verificacionConTokenAdmin", [UsuarioController::class, "verificacionConTokenAdmin"])->middleware(App\Http\Middleware\AdminMiddleware::class);
-//todavia no se usa
-//Route::get ("recetas/VerReceta/{nombreReceta}",[RecetaController::class, "VerReceta"]);
-
 Route::get("recetas/VerificarRecetaFavorita/{id_receta}", [RecetaController::class, "VerificarRecetaFavorita"])->middleware(App\Http\Middleware\UserMiddleware::class);
 
 // Buscador titulo
-Route::post ("recetas/BuscarReceta",[RecetaController::class, "BuscarReceta"]);
+Route::post("recetas/BuscarReceta", [RecetaController::class, "BuscarReceta"]);
 
 
-//Route::get ("recetas/RecetasUsuario/{id}",[UsuarioController::class, "RecetasUsuario"]);
 
-Route::post("usuarios/obtenerUsuarios", [UsuarioController::class, "obtenerUsuarios"]);
 
-//Route::put ("recetas/updateEstadoReceta", [RecetaController::class, "updateEstadoReceta"]);
+
+
+//OFERTAS
+Route::get("ofertas/ObtenerOfertas", [OfertaController::class, "ObtenerOfertas"]);

@@ -11,39 +11,6 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 class UsuarioController extends Controller
 {
 
-    public function CrearUsuario(Request $request)
-    {
-        $usuario = new Usuario();
-        $usuario->nombre = $request->nombre;
-        $usuario->apellidos = $request->apellidos;
-        $usuario->email = $request->email;
-        $usuario->password = $request->password;
-        $usuario->save();
-        return "Usuario creado";
-    }
-
-
-
-    public function login(Request $request)
-    {
-
-        $credentials = $request->only(['email', 'password']);
-
-        $usuarioEncontrado = Usuario::where('email', $request->email)->first();
-        if (is_null($usuarioEncontrado)) {
-            return response()->json(['error' => 'Not found'], 401);
-        } else {
-
-            if (hash('sha256', $request->password) == $usuarioEncontrado->password) {
-                $token = auth()->login($usuarioEncontrado);
-            } else {
-                return response()->json(['error' => 'Unauthorized'], 401);
-            }
-        }
-        return $this->respondWithToken($token);
-    }
-
-
 
     public function Registro(Request $request)
     {
@@ -69,12 +36,34 @@ class UsuarioController extends Controller
         return json_encode($usuario);
     }
 
+    public function login(Request $request)
+    {
 
+        $usuarioEncontrado = Usuario::where('email', $request->email)->first();
+        if (is_null($usuarioEncontrado)) {
+            return response()->json(['error' => 'Not found'], 401);
+        } else {
+
+            if (hash('sha256', $request->password) == $usuarioEncontrado->password) {
+                $token = auth()->login($usuarioEncontrado);
+            } else {
+                return response()->json(['error' => 'Unauthorized'], 401);
+            }
+        }
+        return $this->respondWithToken($token);
+    }
+
+    public function ObtenerUnUsuario()
+    {
+        $usuario = JWTAuth::user();
+        return json_encode($usuario);
+    }
 
     public function ActualizarDatosUsuario(Request $request)
     {
 
-        $usuarioEncontrado = Usuario::find($request->id);
+        $usuario = JWTAuth::user();
+        $usuarioEncontrado = Usuario::find($usuario->id);
 
         $usuarioEncontrado->nombre = $request->nombre;
         $usuarioEncontrado->email = $request->email;
@@ -84,23 +73,33 @@ class UsuarioController extends Controller
         $usuarioEncontrado->es_administrador = $request->es_administrador;
         $usuarioEncontrado->save();
 
-        return json_encode($usuarioEncontrado);
+        $token = auth()->login($usuarioEncontrado);
+        return $this->respondWithToken($token);
     }
 
-
-    public function RecetasUsuario($id)
+    public function ComprobarContrasena(Request $request)
     {
-        $usuario = Usuario::findOrFail($id);
-        $recetas = $usuario->recetas;
-        return "Recetas del usuario: $recetas";
+        $mensaje = 'mensaje';
+        $usuario = JWTAuth::user();
+        $usuarioEncontrado = Usuario::find($usuario->id);
+        if (!is_null($usuarioEncontrado)) {
+            if (hash('sha256', $request->password) == $usuarioEncontrado->password) {
+                $mensaje = $usuarioEncontrado->password;
+            } else {
+                $mensaje = 'incorrecto';
+            }
+        } else {
+            $mensaje = "Usuario no encontrado";
+        }
+        return json_encode($mensaje);
     }
-
 
     public function obtenerUsuarios()
     {
         $usuarios = Usuario::get();
         return json_encode($usuarios);
     }
+
 
 
     /**
@@ -117,92 +116,5 @@ class UsuarioController extends Controller
             'token_type' => 'bearer',
             'expires_in' => auth()->factory()->getTTL() * 60
         ]);
-    }
-
-
-    public function ObtenerUnUsuario()
-    {
-        $usuario = JWTAuth::user();
-        return json_encode($usuario);
-        //$usuario = Usuario::find($request->id);
-        //return json_encode($usuario);
-    }
-
-
-    public function ComprobarContrasena(Request $request)
-    {
-        $mensaje = 'mensaje';
-        $usuarioEncontrado = Usuario::find($request->id);
-        if (!is_null($usuarioEncontrado)) {
-            if (hash('sha256', $request->password) == $usuarioEncontrado->password) {
-                $mensaje = $usuarioEncontrado->password;
-            } else {
-                $mensaje = 'incorrecto';
-            }
-        } else {
-            $mensaje = "Usuario no encontrado";
-        }
-        return json_encode($mensaje);
-    }
-
-    protected function verificacionConToken(Request $request)
-    {
-
-        $user = JWTAuth::user();
-        return $user;
-        /*
-        if ($request->hasHeader('Authorization')) {
-            // La cabecera de autorización no está presente
-            $token = $request->bearerToken();s
-            try {
-                if ($token = JWTAuth::parseToken()->authenticate()) {
-                    $user = JWTAuth::parseToken($token)->authenticate();
-                    //return response()->json(['Verificado' => 'Autorizado'], 200);
-                    return $user;
-                }
-            } catch (Exception $e) {
-                if ($e instanceof \Tymon\JWTAuth\Exceptions\TokenInvalidException) {
-                    return response()->json(['error' => 'TokenInvalidException'], 401);
-                } else if ($e instanceof \Tymon\JWTAuth\Exceptions\TokenExpiredException) {
-                    return response()->json(['error' => 'TokenExpiredException'], 401);
-                } else if ($e instanceof \Tymon\JWTAuth\Exceptions\JWTException) {
-                    return response()->json(['error' => 'JWTException'], 401);
-                } else {
-                    return response()->json(['error' => 'error'], 401);
-                }
-            }
-        }
-        */
-    }
-
-    protected function verificacionConTokenAdmin(Request $request)
-    {
-        $admin = JWTAuth::user();
-        return $admin;
-        /*
-        if ($request->hasHeader('Authorization')) {
-            // La cabecera de autorización no está presente
-            $token = $request->bearerToken();
-            try {
-                $user = JWTAuth::parseToken($token)->authenticate();
-                if ($token = JWTAuth::parseToken()->authenticate() && $user->es_administrador == 1) {
-                    //return response()->json(['Verificado' => 'Autorizado'], 200);
-                    return $user;
-                }else{
-                    return response()->json(['error' => 'NO ES ADMIN'], 401);
-                }
-            } catch (Exception $e) {
-                if ($e instanceof \Tymon\JWTAuth\Exceptions\TokenInvalidException) {
-                    return response()->json(['error' => 'TokenInvalidException'], 401);
-                } else if ($e instanceof \Tymon\JWTAuth\Exceptions\TokenExpiredException) {
-                    return response()->json(['error' => 'TokenExpiredException'], 401);
-                } else if ($e instanceof \Tymon\JWTAuth\Exceptions\JWTException) {
-                    return response()->json(['error' => 'JWTException'], 401);
-                } else {
-                    return response()->json(['error' => 'error'], 401);
-                }
-            }
-        }
-        */
     }
 }
