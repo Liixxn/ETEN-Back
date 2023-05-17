@@ -20,7 +20,12 @@ use App\Models\Receta;
 */
 
 
-//USUARIOS
+/*
+|--------------------------------------------------------------------------
+| Endpoints USUARIOS
+|---------------------------------------------------------------------------
+*/
+
 Route::post("usuarios/Registro", [UsuarioController::class, "Registro"]);
 
 Route::post("usuarios/login", [UsuarioController::class, "login"]);
@@ -33,37 +38,66 @@ Route::post("usuarios/ComprobarContrasena", [UsuarioController::class, "Comproba
 
 Route::get("usuarios/obtenerUsuarios", [UsuarioController::class, "obtenerUsuarios"])->middleware(App\Http\Middleware\AdminMiddleware::class);
 
+/*
+|--------------------------------------------------------------------------
+| FIN Endpoints USUARIOS
+|---------------------------------------------------------------------------
+*/
 
 
 
 
+/*
+|--------------------------------------------------------------------------
+| Endpoints RECETAS
+|---------------------------------------------------------------------------
+*/
 
+//para las estadisticas del admin todavia no implementada
+Route::get("recetas/ObtenerRecetas", [RecetaController::class, "ObtenerRecetas"])->middleware(App\Http\Middleware\AdminMiddleware::class);
 
-//RECETAS
-Route::get("recetas/ObtenerRecetas", [RecetaController::class, "ObtenerRecetas"]);
+//Para las recetas favoritas del usuario
+Route::get("recetas/ObtenerIdRecetasFavoritas", [RecetaController::class, "ObtenerIdRecetasFavoritas"])->middleware(App\Http\Middleware\UserMiddleware::class);
+Route::post("recetas/ObtenerRecetasPorId", [RecetaController::class, "ObtenerRecetasPorId"])->middleware(App\Http\Middleware\UserMiddleware::class);
+Route::get("recetas/GuardarRecetaFavoritos/{id_receta}", [RecetaController::class, "GuardarRecetaFavoritos"])->middleware(App\Http\Middleware\UserMiddleware::class);
+Route::get("recetas/EliminarRecetaFavoritos/{id_receta}", [RecetaController::class, "EliminarRecetaFavoritos"])->middleware(App\Http\Middleware\UserMiddleware::class);
+Route::get("recetas/VerificarRecetaFavorita/{id_receta}", [RecetaController::class, "VerificarRecetaFavorita"])->middleware(App\Http\Middleware\UserMiddleware::class);
+
+//paginacion
 Route::get("recetas/ObtenerRecetasPorCategoria/{num_categoria}/{pagina}", [RecetaController::class, "ObtenerRecetasPorCategoria"]);
+
+
+
+//voy por aquiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii
+
 
 Route::post("recetas/ObtenerRecetaIngrediente", [IngredienteController::class, "obtenerRecetaIngrediente"]);
 Route::post("receta/ingredientes", [IngredienteController::class, "obtenerIngredientes"]);
 //Para agregar y eliminar de favoritos
-Route::post("recetas/GuardarRecetaFavoritos", [RecetaController::class, "GuardarRecetaFavoritos"]);
-Route::post("recetas/EliminarRecetaFavoritos", [RecetaController::class, "EliminarRecetaFavoritos"]);
-Route::post("recetas/ObtenerIdRecetasFavoritas", [RecetaController::class, "ObtenerIdRecetasFavoritas"]);
 
-Route::post("recetas/ObtenerRecetas", [RecetaController::class, "ObtenerRecetas"]);
 Route::get("recetas/ObtenerUnaReceta/{id}", [RecetaController::class, "ObtenerUnaReceta"]);
-
-Route::post("recetas/ObtenerRecetasPorId", [RecetaController::class, "ObtenerRecetasPorId"]);
-
-Route::get("recetas/VerificarRecetaFavorita/{id_receta}", [RecetaController::class, "VerificarRecetaFavorita"])->middleware(App\Http\Middleware\UserMiddleware::class);
 
 // Buscador titulo
 Route::post("recetas/BuscarReceta", [RecetaController::class, "BuscarReceta"]);
 
+/*
+|--------------------------------------------------------------------------
+| FIN Endpoints RECETAS
+|---------------------------------------------------------------------------
+*/
 
 
 
+/*
+|--------------------------------------------------------------------------
+| Endpoints OFERTAS
+|---------------------------------------------------------------------------
+*/
 
-
-//OFERTAS
 Route::get("ofertas/ObtenerOfertas", [OfertaController::class, "ObtenerOfertas"]);
+
+/*
+|--------------------------------------------------------------------------
+| FIN Endpoints OFERTAS
+|---------------------------------------------------------------------------
+*/
