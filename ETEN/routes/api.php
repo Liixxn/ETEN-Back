@@ -62,3 +62,6 @@ Route::post ("recetas/BuscarReceta",[RecetaController::class, "BuscarReceta"]);
 Route::post("usuarios/obtenerUsuarios", [UsuarioController::class, "obtenerUsuarios"]);
 
 //Route::put ("recetas/updateEstadoReceta", [RecetaController::class, "updateEstadoReceta"]);
+
+
+Route::post("recetas/ObtenerRecetaFavoritaUsuario", [RecetaController::class, "ObtenerRecetaFavoritaUsuario"]);

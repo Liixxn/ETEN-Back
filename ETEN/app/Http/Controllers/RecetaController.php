@@ -139,7 +139,7 @@ class RecetaController extends Controller
                 $nuevoFavorito->id_usuario = $request->id_user;
                 $nuevoFavorito->id_receta = $request->id_receta;
                 $nuevoFavorito->save();
-                
+
             } else {
                 $favoritoEncontrado = UsuarioReceta::where('id_usuario', $request->id_user)->where('id_receta', $request->id_receta)->restore();
             }
@@ -177,6 +177,21 @@ class RecetaController extends Controller
             $idsFavoritos = UsuarioReceta::where('id_usuario', $request->id_user)->pluck('id_receta')->toArray();
         }
         return json_encode($idsFavoritos);
+    }
+
+    public function ObtenerRecetaFavoritaUsuario(Request $request) {
+
+        $recetasFavoritias = $request->recetasFavoritas;
+
+        if (sizeof($recetasFavoritias) != 0) {
+
+            $recetas = Receta::whereIn('id', $recetasFavoritias);
+            $recetasBuscar = $recetas->where("titulo", 'LIKE', '%'. $request->titulo .'%')->get();
+
+            return json_encode($recetasBuscar);
+        }
+
+        return json_encode($recetasFavoritias);
     }
 
 
