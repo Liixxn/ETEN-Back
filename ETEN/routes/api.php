@@ -34,8 +34,10 @@ Route::get("usuarios/ObtenerUnUsuario", [UsuarioController::class, "ObtenerUnUsu
 
 Route::put("usuarios/ActualizarDatosUsuario", [UsuarioController::class, "ActualizarDatosUsuario"])->middleware(App\Http\Middleware\UserMiddleware::class);
 
+//para ver si puedes Actualizar los datos del usuario
 Route::post("usuarios/ComprobarContrasena", [UsuarioController::class, "ComprobarContrasena"])->middleware(App\Http\Middleware\UserMiddleware::class);
 
+//para que el admin vea todos los usuarios
 Route::get("usuarios/obtenerUsuarios", [UsuarioController::class, "obtenerUsuarios"])->middleware(App\Http\Middleware\AdminMiddleware::class);
 
 /*
@@ -66,15 +68,7 @@ Route::get("recetas/VerificarRecetaFavorita/{id_receta}", [RecetaController::cla
 //paginacion
 Route::get("recetas/ObtenerRecetasPorCategoria/{num_categoria}/{pagina}", [RecetaController::class, "ObtenerRecetasPorCategoria"]);
 
-
-
-//voy por aquiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii
-
-
-Route::post("recetas/ObtenerRecetaIngrediente", [IngredienteController::class, "obtenerRecetaIngrediente"]);
-Route::post("receta/ingredientes", [IngredienteController::class, "obtenerIngredientes"]);
-//Para agregar y eliminar de favoritos
-
+//info receta
 Route::get("recetas/ObtenerUnaReceta/{id}", [RecetaController::class, "ObtenerUnaReceta"]);
 
 // Buscador titulo
@@ -83,6 +77,24 @@ Route::post("recetas/BuscarReceta", [RecetaController::class, "BuscarReceta"]);
 /*
 |--------------------------------------------------------------------------
 | FIN Endpoints RECETAS
+|---------------------------------------------------------------------------
+*/
+
+/*
+|--------------------------------------------------------------------------
+| Endpoints INGREDIENTES
+|---------------------------------------------------------------------------
+*/
+
+//Buscador por ingredientes
+Route::post("recetas/ingredientes/ObtenerRecetaIngrediente", [IngredienteController::class, "obtenerRecetaIngrediente"]);
+
+//ingredientes dentro de info receta
+Route::get("recetas/ingredientes/ingredientesUnaReceta/{id_receta}", [IngredienteController::class, "obtenerIngredientes"]);
+
+/*
+|--------------------------------------------------------------------------
+| FIN Endpoints INGREDIENTES
 |---------------------------------------------------------------------------
 */
 

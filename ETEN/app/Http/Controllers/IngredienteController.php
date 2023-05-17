@@ -10,7 +10,8 @@ use Illuminate\Support\Facades\DB;
 class IngredienteController extends Controller
 {
 
-    public function obtenerRecetaIngrediente(Request $request) {
+    public function obtenerRecetaIngrediente(Request $request)
+    {
 
         $ingredientes = $request->ingredientes;
 
@@ -28,7 +29,6 @@ class IngredienteController extends Controller
             foreach ($ingredientes as $ingrediente) {
                 $ingredienteS = "%" . $ingrediente . "%";
                 $queryWhere .= " AND (SELECT count(1) FROM ingredientes wHERE nombre_ingrediente LIKE '$ingredienteS' and id_receta=recetas.id) > 0";
-
             }
             $recetasResultados = DB::table('recetas')->whereRaw($queryWhere);
 
@@ -39,7 +39,6 @@ class IngredienteController extends Controller
 
                 return [$recetas, $tamanio, sizeof($recetas)];
             }
-
         }
         $tamanio = count($recetasTotales);
         $nIngredientes = 0;
@@ -47,11 +46,11 @@ class IngredienteController extends Controller
 
 
         return [$recetas, $tamanio, $nIngredientes];
-
     }
-    public function obtenerIngredientes(Request $request){
-        //$ingredientes = Ingrediente::where('id_receta', $request->id);
-        $ingredientes = Ingrediente::where('id_receta', $request->id)->get();
+
+    public function obtenerIngredientes($id_receta)
+    {
+        $ingredientes = Ingrediente::where('id_receta', $id_receta)->get();
         return json_encode($ingredientes);
-      }
+    }
 }

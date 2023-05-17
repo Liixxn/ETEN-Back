@@ -118,28 +118,11 @@ class RecetaController extends Controller
         }
     }
 
-
-//por aquiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    public function ObtenerUnaReceta($id)
+    {
+        $receta = Receta::find($id);
+        return $receta;
+    }
 
     public function BuscarReceta(Request $request)
     {
@@ -175,25 +158,5 @@ class RecetaController extends Controller
 
 
         return [$recetas, $tamnio, $mostrar];
-    }
-
-
-
-    public function updateEstadoReceta(Request $request)
-    {
-        $receta = Receta::findOrFail($request->id); //obtiene la receta a actualizar
-        $receta->activo = $request->activo;
-        $receta->save();
-        return "Receta actualizada";
-    }
-
-
-
-
-
-    public function ObtenerUnaReceta($id)
-    {
-        $receta = Receta::find($id);
-        return $receta;
     }
 }
