@@ -23,6 +23,7 @@ use App\Http\Controllers\UsuarioController;
 
 Route::get ("ofertas/ObtenerTodasOfertas",[OfertaController::class, "obtenerTodasOfertas"]);
 Route::get ("ofertas/obtenerOfertasPorCategoria/{num_categoria}/{pagina}" ,[OfertaController::class, "obtenerOfertasPorCategoria"]);
+Route::post("ofertas/sumarVisita", [OfertaController::class, "sumarVisita"]);
 
 Route::post ("recetas/ObtenerRecetaIngrediente", [IngredienteController::class, "obtenerRecetaIngrediente"]);
 Route::post ("receta/ingredientes",[IngredienteController::class, "obtenerIngredientes"]);
