@@ -49,6 +49,8 @@ class OfertaController extends Controller
         $ofertas = $listaOfertas->select('id', 'nombreOferta', 
         'precioActual', 'precioAnterior', 'imagenOferta', 'urlOferta', 'categoria')->offset($offset)
         ->limit(20)->get();
+        
+       
 
         return [$ofertas, $size];
     }
