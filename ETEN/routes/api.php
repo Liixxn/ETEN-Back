@@ -106,7 +106,9 @@ Route::get("recetas/ingredientes/ingredientesUnaReceta/{id_receta}", [Ingredient
 |---------------------------------------------------------------------------
 */
 
-Route::get("ofertas/ObtenerOfertas", [OfertaController::class, "ObtenerOfertas"]);
+Route::get ("ofertas/ObtenerTodasOfertas",[OfertaController::class, "obtenerTodasOfertas"]);
+Route::get ("ofertas/obtenerOfertasPorCategoria/{num_categoria}/{pagina}" ,[OfertaController::class, "obtenerOfertasPorCategoria"]);
+Route::post("ofertas/sumarVisita", [OfertaController::class, "sumarVisita"]);
 
 /*
 |--------------------------------------------------------------------------
