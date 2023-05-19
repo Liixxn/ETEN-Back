@@ -7,9 +7,49 @@ use App\Models\Oferta;
 
 class OfertaController extends Controller
 {
-    public function ObtenerOfertas()
+    public function obtenerTodasOfertas()
     {
-        $oferta = Oferta::getAll();
-        return "Receta: $oferta";
+        $ofertas = Oferta::get(['id', 'nombreOferta', 
+        'precioActual', 'precioAnterior', 'imagenOferta', 'urlOferta', 'categoria'])->toArray();
+        return $ofertas;
+    }
+
+    public function sumarVisita(Request $request)
+    {
+        $oferta = Oferta::findOrFail($request->id); 
+        $user = $request->user();
+        //si el usuario ha visitado la oferta, se suma una visita
+        if($user->hasVisited($oferta->id)){
+            $oferta->visitas = $oferta->visitas + 1;
+            $oferta->save();
+        }
+        //si no la ha visitado, se crea la visita
+        else{
+            $user->visitas()->attach($oferta->id);
+            $oferta->visitas = 1;
+            $oferta->save();
+        }
+    }    
+    
+    public function obtenerOfertasPorCategoria($num_categoria, $pagina)
+    {
+        $ofertas = Oferta::get(['id', 'nombreOferta', 
+        'precioActual', 'precioAnterior', 'imagenOferta', 'urlOferta', 'categoria']);
+
+        $size = $ofertas->count();
+
+        $cantOfertas = 20;
+
+        $listaOfertas = Oferta::where('categoria', $num_categoria);
+
+        $size = $listaOfertas->count();
+
+        $offset = ($pagina - 1) * $cantOfertas;
+
+        $ofertas = $listaOfertas->select('id', 'nombreOferta', 
+        'precioActual', 'precioAnterior', 'imagenOferta', 'urlOferta', 'categoria')->offset($offset)
+        ->limit(20)->get();
+
+        return [$ofertas, $size];
     }
 }
