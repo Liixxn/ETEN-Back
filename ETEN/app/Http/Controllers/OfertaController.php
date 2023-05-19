@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use App\Models\Oferta;
 
 
+
 class OfertaController extends Controller
 {
     public function obtenerTodasOfertas()
@@ -17,7 +18,7 @@ class OfertaController extends Controller
     public function sumarVisita(Request $request)
     {
         $oferta = Oferta::findOrFail($request->id); 
-        $user = $request->user();
+        $user = $request->user();//$user = JWTAuth::user();
         //si el usuario ha visitado la oferta, se suma una visita
         if($user->hasVisited($oferta->id)){
             $oferta->visitas = $oferta->visitas + 1;
@@ -33,25 +34,34 @@ class OfertaController extends Controller
     
     public function obtenerOfertasPorCategoria($num_categoria, $pagina)
     {
-        $ofertas = Oferta::get(['id', 'nombreOferta', 
-        'precioActual', 'precioAnterior', 'imagenOferta', 'urlOferta', 'categoria']);
+        $ofertasTodas = Oferta::get();
 
-        $size = $ofertas->count();
+        $sizeOfertasTotal = $ofertasTodas->count();
 
         $cantOfertas = 20;
 
-        $listaOfertas = Oferta::where('categoria', $num_categoria);
-
-        $size = $listaOfertas->count();
-
         $offset = ($pagina - 1) * $cantOfertas;
 
-        $ofertas = $listaOfertas->select('id', 'nombreOferta', 
-        'precioActual', 'precioAnterior', 'imagenOferta', 'urlOferta', 'categoria')->offset($offset)
-        ->limit(20)->get();
+        $listaOfertas = Oferta::where('categoria', $num_categoria); 
         
-       
+        if ($listaOfertas->count() != 0){
 
-        return [$ofertas, $size];
+            $listaOfertas = Oferta::where('categoria', $num_categoria);
+
+            $sizeOfertas = $listaOfertas->count();
+
+        
+            $ofertas = $listaOfertas->offset($offset)
+            ->limit(20)->get();
+
+            return [$ofertas, $sizeOfertas, $cantOfertas];
+
+        }
+
+        $ofertas = Oferta::offset($offset)
+            ->limit(20)->get();
+
+
+        return [$ofertas, $sizeOfertasTotal, $cantOfertas];
     }
 }
