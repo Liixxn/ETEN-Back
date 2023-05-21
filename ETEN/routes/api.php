@@ -108,7 +108,7 @@ Route::get("recetas/ingredientes/ingredientesUnaReceta/{id_receta}", [Ingredient
 
 Route::get ("ofertas/ObtenerTodasOfertas",[OfertaController::class, "obtenerTodasOfertas"]);
 Route::get ("ofertas/obtenerOfertasPorCategoria/{num_categoria}/{pagina}" ,[OfertaController::class, "obtenerOfertasPorCategoria"]);
-Route::post("ofertas/sumarVisita", [OfertaController::class, "sumarVisita"])->middleware(App\Http\Middleware\UserMiddleware::class);
+Route::get ("ofertas/SumarVisitas/{id_oferta}", [OfertaController::class, "sumarVisita"])->middleware(App\Http\Middleware\UserMiddleware::class);
 
 /*
 |--------------------------------------------------------------------------
