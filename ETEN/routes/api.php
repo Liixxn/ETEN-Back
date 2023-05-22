@@ -66,7 +66,7 @@ Route::post("recetas/ObtenerRecetasPorId", [RecetaController::class, "ObtenerRec
 Route::get("recetas/GuardarRecetaFavoritos/{id_receta}", [RecetaController::class, "GuardarRecetaFavoritos"])->middleware(App\Http\Middleware\UserMiddleware::class);
 Route::get("recetas/EliminarRecetaFavoritos/{id_receta}", [RecetaController::class, "EliminarRecetaFavoritos"])->middleware(App\Http\Middleware\UserMiddleware::class);
 Route::get("recetas/VerificarRecetaFavorita/{id_receta}", [RecetaController::class, "VerificarRecetaFavorita"])->middleware(App\Http\Middleware\UserMiddleware::class);
-
+Route::post("recetas/ObtenerRecetaFavoritaUsuario", [RecetaController::class, "ObtenerRecetaFavoritaUsuario"]);
 //paginacion
 Route::get("recetas/ObtenerRecetasPorCategoria/{num_categoria}/{pagina}", [RecetaController::class, "ObtenerRecetasPorCategoria"]);
 
