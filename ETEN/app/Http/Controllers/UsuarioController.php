@@ -41,16 +41,18 @@ class UsuarioController extends Controller
 
         $usuarioEncontrado = Usuario::where('email', $request->email)->first();
         if (is_null($usuarioEncontrado)) {
-            return response()->json(['error' => 'Not found'], 401);
+            //return response()->json(['error' => 'Not found'], 401);
+            return json_encode("no encontrado");
         } else {
 
             if (hash('sha256', $request->password) == $usuarioEncontrado->password) {
                 $token = auth()->login($usuarioEncontrado);
+                return $this->respondWithToken($token);
             } else {
-                return response()->json(['error' => 'Unauthorized'], 401);
+                //return response()->json(['error' => 'Unauthorized'], 401);
+                return json_encode("incorrecto");
             }
         }
-        return $this->respondWithToken($token);
     }
 
     public function refresh()
