@@ -80,8 +80,8 @@ class RecetaController extends Controller
 
     public function ObtenerRecetas(Request $request)
     {
-        $receta = Receta::get(['id', 'titulo', 'img']);
-        return json_encode($receta);
+        $receta = Receta::get(['id', 'titulo', 'categoria', 'activo']); 
+        return json_encode($receta); 
     }
 
 
@@ -121,6 +121,7 @@ class RecetaController extends Controller
     {
         $ids = $request->ids;
         $recetas = Receta::whereIn('id', $ids)->get();
+
         return $recetas;
     }
 
