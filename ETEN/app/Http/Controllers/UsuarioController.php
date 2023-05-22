@@ -53,6 +53,13 @@ class UsuarioController extends Controller
         return $this->respondWithToken($token);
     }
 
+    public function refresh()
+    {
+        $usuario = JWTAuth::user();
+        $token = auth()->login($usuario);
+        return $this->respondWithToken($token);
+    }
+
     public function ObtenerUnUsuario()
     {
         $usuario = JWTAuth::user();
@@ -113,7 +120,8 @@ class UsuarioController extends Controller
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => auth()->factory()->getTTL() * 60
+            //'expires_in' => auth()->factory()->getTTL() * 60
+            'expires_in' => auth()->factory()->getTTL() * 1
         ]);
     }
 }
