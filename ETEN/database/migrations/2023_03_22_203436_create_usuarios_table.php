@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('email', 50);
             $table->text('password', 100);
             $table->boolean('subscripcion');
-            $table->text('img')->nullable();
+            $table->longText('img')->nullable();
             $table->boolean('es_administrador')->default(false);
             $table->timestamps();
             $table->softDeletes();
