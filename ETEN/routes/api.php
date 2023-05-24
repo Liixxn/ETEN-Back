@@ -30,7 +30,7 @@ Route::post("usuarios/Registro", [UsuarioController::class, "Registro"]);
 
 Route::post("usuarios/login", [UsuarioController::class, "login"]);
 
-Route::get("usuarios/refresh", [UsuarioController::class, "refresh"]);
+Route::get("usuarios/refresh", [UsuarioController::class, "refresh"])->middleware(App\Http\Middleware\UserMiddleware::class);
 
 Route::get("usuarios/ObtenerUnUsuario", [UsuarioController::class, "ObtenerUnUsuario"])->middleware(App\Http\Middleware\UserMiddleware::class);
 
