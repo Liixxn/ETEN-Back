@@ -42,6 +42,8 @@ Route::post("usuarios/ComprobarContrasena", [UsuarioController::class, "Comproba
 //para que el admin vea todos los usuarios
 Route::get("usuarios/obtenerUsuarios", [UsuarioController::class, "obtenerUsuarios"])->middleware(App\Http\Middleware\AdminMiddleware::class);
 
+//para que el admin vea los usuarios registrados y suscritos
+Route::get("usuarios/obtenerTiposUsuarios", [UsuarioController::class, "obtenerTiposUsuarios"])->middleware(App\Http\Middleware\AdminMiddleware::class);
 /*
 |--------------------------------------------------------------------------
 | FIN Endpoints USUARIOS
@@ -59,6 +61,8 @@ Route::get("usuarios/obtenerUsuarios", [UsuarioController::class, "obtenerUsuari
 
 //para las estadisticas del admin todavia no implementada
 Route::get("recetas/ObtenerRecetas", [RecetaController::class, "ObtenerRecetas"])->middleware(App\Http\Middleware\AdminMiddleware::class);
+//para las estadisticas del admin, obtiene el numero de recetas por categoria
+Route::get("recetas/ObtenerNumRecetasPorCategoria", [RecetaController::class, "ObtenerNumRecetasCategoria"])->middleware(App\Http\Middleware\AdminMiddleware::class);
 
 //Para las recetas favoritas del usuario
 Route::get("recetas/ObtenerIdRecetasFavoritas", [RecetaController::class, "ObtenerIdRecetasFavoritas"])->middleware(App\Http\Middleware\UserMiddleware::class);
@@ -112,6 +116,8 @@ Route::get ("ofertas/ObtenerTodasOfertas",[OfertaController::class, "obtenerToda
 Route::get ("ofertas/obtenerOfertasPorCategoria/{num_categoria}/{pagina}" ,[OfertaController::class, "obtenerOfertasPorCategoria"]);
 Route::get ("ofertas/SumarVisitas/{id_oferta}", [OfertaController::class, "sumarVisita"])->middleware(App\Http\Middleware\UserMiddleware::class);
 
+//para el administrador para ver que ofertas son las mas visitadas
+Route::get("ofertas/ObtenerOfertasMasVisitadas", [OfertaController::class, "ObtenerOfertasMasVisitadas"])->middleware(App\Http\Middleware\AdminMiddleware::class);
 /*
 |--------------------------------------------------------------------------
 | FIN Endpoints OFERTAS

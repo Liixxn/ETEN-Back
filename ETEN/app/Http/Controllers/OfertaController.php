@@ -67,4 +67,27 @@ class OfertaController extends Controller
 
         return [$ofertas, $sizeOfertasTotal, $cantOfertas];
     }
+
+    public function ObtenerOfertasMasVisitadas() {
+
+        $ofertasVisualizaciones = UsuarioOferta::get();
+
+        $idsOfertas = $ofertasVisualizaciones->groupBy('id_oferta');
+        $visitas = 0;
+        $arrayVisitasTotales = [];
+
+        foreach ($idsOfertas as $key => $value) {
+            $oferta = Oferta::find($key);
+            $nombreOferta = $oferta->nombreOferta;
+            $visitas = $value->sum('visitas');
+            array_push($arrayVisitasTotales, ["id" => $key, "visitas" => $visitas, "nombreOferta" => $nombreOferta]);
+
+        }
+
+        $arrayVisitasTotales = collect($arrayVisitasTotales)->sortByDesc('visitas')->take(5)->values()->all();
+
+        return json_encode($arrayVisitasTotales);
+
+    }
+
 }
