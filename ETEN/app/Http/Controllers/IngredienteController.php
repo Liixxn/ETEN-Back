@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Config_recetasOfertas;
 use App\Models\Ingrediente;
 use App\Models\Receta;
 use Illuminate\Http\Request;
@@ -16,14 +17,20 @@ class IngredienteController extends Controller
         $ingredientes = $request->ingredientes;
 
         $recetasTotales = Receta::get(['id', 'titulo', 'img']);
-        $tamanio = count($recetasTotales);
 
-        $nIngredientes = 12;
-        $offset = ($request->pagina - 1) * 12;
+        $configNum = Config_recetasOfertas::where('tipo', 0)->get();
 
-        $nIngredientes = count($ingredientes);
+        if ($configNum->count() > 0) {
+            $mostrar = $configNum->last()->num_recetasPagina;
+        }
+        else {
+            $mostrar = 12;
+        }
 
-        if ($nIngredientes > 0) {
+        $offset = ($request->pagina - 1) * $mostrar;
+
+
+        if (count($ingredientes) > 0) {
 
             $queryWhere = "1=1";
             foreach ($ingredientes as $ingrediente) {
@@ -35,17 +42,17 @@ class IngredienteController extends Controller
             $tamanio = $recetasResultados->count();
 
             if ($tamanio > 0) {
-                $recetas = $recetasResultados->select('id', 'titulo', 'img')->offset($offset)->limit(12)->get();
+                $recetas = $recetasResultados->select('id', 'titulo', 'img')->offset($offset)->limit($mostrar)->get();
 
-                return [$recetas, $tamanio, sizeof($recetas)];
+                return [$recetas, $tamanio, sizeof($recetas) ,sizeof($recetas)];
             }
         }
         $tamanio = count($recetasTotales);
-        $nIngredientes = 0;
-        $recetas = Receta::select('id', 'titulo', 'img')->offset($offset)->limit(12)->get();
+        $tamanioComprobacion = 0;
+        $recetas = Receta::select('id', 'titulo', 'img')->offset($offset)->limit($mostrar)->get();
 
 
-        return [$recetas, $tamanio, $nIngredientes];
+        return [$recetas, $tamanio, $tamanioComprobacion, $mostrar];
     }
 
     public function obtenerIngredientes($id_receta)

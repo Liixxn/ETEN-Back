@@ -63,6 +63,8 @@ Route::get("usuarios/obtenerTiposUsuarios", [UsuarioController::class, "obtenerT
 Route::get("recetas/ObtenerRecetas", [RecetaController::class, "ObtenerRecetas"])->middleware(App\Http\Middleware\AdminMiddleware::class);
 //para las estadisticas del admin, obtiene el numero de recetas por categoria
 Route::get("recetas/ObtenerNumRecetasPorCategoria", [RecetaController::class, "ObtenerNumRecetasCategoria"])->middleware(App\Http\Middleware\AdminMiddleware::class);
+//Para las estadisticas del admin para cambair el numero de recetas a mostrar
+Route::post("recetas/CambiarNumeroRecetasPagina", [RecetaController::class, "CambiarNumeroRecetasPagina"])->middleware(App\Http\Middleware\AdminMiddleware::class);
 
 //Para las recetas favoritas del usuario
 Route::get("recetas/ObtenerIdRecetasFavoritas", [RecetaController::class, "ObtenerIdRecetasFavoritas"])->middleware(App\Http\Middleware\UserMiddleware::class);

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Config_recetasOfertas;
 use App\Models\Ingrediente;
 use Illuminate\Http\Request;
 
@@ -30,6 +31,24 @@ class RecetaController extends Controller
         $numVegetal = count(Receta::where('categoria', 8)->get());
 
         return [$numRecetasTotales, $numArroz, $numBebida, $numCarne, $numDulce, $numPasta, $numPescado, $numVariado, $numVegetal];
+    }
+
+    public function CambiarNumeroRecetasPagina(Request $request) {
+
+        $config = new Config_recetasOfertas();
+
+        if ($request->tipoCambio == 0) {
+            $config->tipo = 0;
+        }
+        else {
+            $config->tipo = 1;
+        }
+
+        $config->num_recetasPagina = $request->numReceta;
+        $config->save();
+
+
+        return json_encode($config);
     }
 
 
@@ -93,7 +112,14 @@ class RecetaController extends Controller
         $recetaNumero = Receta::get();
         $tamnio = $recetaNumero->count();
 
-        $mostrar = 12;
+        $configNum = Config_recetasOfertas::where('tipo', 0)->get();
+
+        if ($configNum->count() > 0) {
+            $mostrar = $configNum->last()->num_recetasPagina;
+        }
+        else {
+            $mostrar = 12;
+        }
 
         if ($request->titulo != "") {
 
@@ -107,17 +133,17 @@ class RecetaController extends Controller
 
                 $tamnio = $recetasBuscar->count();
 
-                $offset = ($request->pagina - 1) * 12;
+                $offset = ($request->pagina - 1) * $mostrar;
 
-                $recetas = $recetasBuscar->select('id', 'titulo', 'img')->offset($offset)->limit(12)->get();
+                $recetas = $recetasBuscar->select('id', 'titulo', 'img')->offset($offset)->limit($mostrar)->get();
 
                 return [$recetas, $tamnio, sizeof($recetas)];
             }
         }
 
-        $offset = ($request->pagina - 1) * 12;
+        $offset = ($request->pagina - 1) * $mostrar;
 
-        $recetas = Receta::select('id', 'titulo', 'img')->offset($offset)->limit(12)->get();
+        $recetas = Receta::select('id', 'titulo', 'img')->offset($offset)->limit($mostrar)->get();
 
 
         return [$recetas, $tamnio, $mostrar];
@@ -161,7 +187,14 @@ class RecetaController extends Controller
         $recetas = Receta::get(['id', 'titulo', 'img']);
         $tamanio = $recetas->count();
 
-        $mostrar = 12;
+        $configNum = Config_recetasOfertas::where('tipo', 0)->get();
+
+        if ($configNum->count() > 0) {
+            $mostrar = $configNum->last()->num_recetasPagina;
+        }
+        else {
+            $mostrar = 12;
+        }
 
         if ($num_categoria != 0) {
 
@@ -169,14 +202,14 @@ class RecetaController extends Controller
 
             $tamanio = $recetasResultados->count();
 
-            $offset = ($pagina - 1) * 12;
+            $offset = ($pagina - 1) * $mostrar;
 
-            $recetas = $recetasResultados->select('id', 'titulo', 'img')->offset($offset)->limit(12)->get();
+            $recetas = $recetasResultados->select('id', 'titulo', 'img')->offset($offset)->limit($mostrar)->get();
 
-            return [$recetas, $tamanio];
+            return [$recetas, $tamanio, sizeof($recetas)];
         }
 
-        return [$recetas, $tamanio];
+        return [$recetas, $tamanio, $mostrar];
     }
 
     public function ObtenerIdRecetasFavoritas()
