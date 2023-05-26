@@ -18,9 +18,6 @@ class RecetaController extends Controller
 
     public function ObtenerNumRecetasCategoria() {
 
-        $todasRecetas = Receta::get();
-        $numRecetasTotales = $todasRecetas->count();
-
         $numArroz = count(Receta::where('categoria', 1)->get());
         $numBebida = count(Receta::where('categoria', 2)->get());
         $numCarne = count(Receta::where('categoria', 3)->get());
@@ -30,7 +27,7 @@ class RecetaController extends Controller
         $numVariado = count(Receta::where('categoria', 7)->get());
         $numVegetal = count(Receta::where('categoria', 8)->get());
 
-        return [$numRecetasTotales, $numArroz, $numBebida, $numCarne, $numDulce, $numPasta, $numPescado, $numVariado, $numVegetal];
+        return [$numArroz, $numBebida, $numCarne, $numDulce, $numPasta, $numPescado, $numVariado, $numVegetal];
     }
 
     public function CambiarNumeroRecetasPagina(Request $request) {

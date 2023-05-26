@@ -112,7 +112,7 @@ class UsuarioController extends Controller
 
     public function obtenerTiposUsuarios() {
 
-        $numUsuariosRegistrados = count(Usuario::where('es_administrador', 0)->get());
+        $numUsuariosRegistrados = count(Usuario::where('es_administrador', 0)->where('subscripcion', 0)->get());
         $numUsuariosSubscriptos = count(Usuario::where('es_administrador', 0)->where('subscripcion', 1)->get());
 
         return [$numUsuariosRegistrados, $numUsuariosSubscriptos];
