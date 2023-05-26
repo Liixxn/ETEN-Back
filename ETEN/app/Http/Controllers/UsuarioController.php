@@ -46,6 +46,8 @@ class UsuarioController extends Controller
         } else {
 
             if (hash('sha256', $request->password) == $usuarioEncontrado->password) {
+                //para modificar el timeout del token al crearse podria usarse
+                //$token = auth()->setTTL(7200)->login($usuarioEncontrado);
                 $token = auth()->login($usuarioEncontrado);
                 return $this->respondWithToken($token);
             } else {
