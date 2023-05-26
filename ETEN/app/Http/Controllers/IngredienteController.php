@@ -26,11 +26,12 @@ class IngredienteController extends Controller
         if ($nIngredientes > 0) {
 
             $queryWhere = "1=1";
+            $params=[];
             foreach ($ingredientes as $ingrediente) {
-                $ingredienteS = "%" . $ingrediente . "%";
-                $queryWhere .= " AND (SELECT count(1) FROM ingredientes wHERE nombre_ingrediente LIKE '$ingredienteS' and id_receta=recetas.id) > 0";
+                $params[] = "%" . $ingrediente . "%";
+                $queryWhere .= " AND (SELECT count(1) FROM ingredientes wHERE nombre_ingrediente LIKE ? and id_receta=recetas.id) > 0";
             }
-            $recetasResultados = DB::table('recetas')->whereRaw($queryWhere);
+            $recetasResultados = DB::table('recetas')->whereRaw($queryWhere, $params);
 
             $tamanio = $recetasResultados->count();
 
