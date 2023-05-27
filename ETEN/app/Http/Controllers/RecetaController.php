@@ -240,8 +240,8 @@ class RecetaController extends Controller
 
     public function CambiarEstadoReceta($listaRecetas)
     {
-        foreach ($listaRecetas as $lisRecetas){
-            $receta = Receta::findOrFail($lisRecetas); 
+        foreach ($listaRecetas as $id_receta){
+            $receta = Receta::findOrFail($id_receta); 
             $estadoActual = $receta->activo;
             if ($estadoActual == 1) {
                 $activo = 0;
