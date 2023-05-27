@@ -83,7 +83,7 @@ Route::get("recetas/ObtenerUnaReceta/{id}", [RecetaController::class, "ObtenerUn
 Route::post("recetas/BuscarReceta", [RecetaController::class, "BuscarReceta"]);
 
 //Guardar cambios
-Route::post("recetas/GuardarCambiosReceta", [RecetaController::class, "GuardarCambiosReceta"]);
+Route::post("recetas/GuardarCambiosReceta", [RecetaController::class, "GuardarCambiosReceta"])->middleware(App\Http\Middleware\AdminMiddleware::class);;
 
 /*
 |--------------------------------------------------------------------------

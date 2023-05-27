@@ -16,7 +16,8 @@ class RecetaController extends Controller
 {
 
 
-    public function ObtenerNumRecetasCategoria() {
+    public function ObtenerNumRecetasCategoria()
+    {
 
         $numArroz = count(Receta::where('categoria', 1)->get());
         $numBebida = count(Receta::where('categoria', 2)->get());
@@ -30,14 +31,14 @@ class RecetaController extends Controller
         return [$numArroz, $numBebida, $numCarne, $numDulce, $numPasta, $numPescado, $numVariado, $numVegetal];
     }
 
-    public function CambiarNumeroRecetasPagina(Request $request) {
+    public function CambiarNumeroRecetasPagina(Request $request)
+    {
 
         $config = new Config_recetasOfertas();
 
         if ($request->tipoCambio == 0) {
             $config->tipo = 0;
-        }
-        else {
+        } else {
             $config->tipo = 1;
         }
 
@@ -113,8 +114,7 @@ class RecetaController extends Controller
 
         if ($configNum->count() > 0) {
             $mostrar = $configNum->last()->num_recetasPagina;
-        }
-        else {
+        } else {
             $mostrar = 12;
         }
 
@@ -190,8 +190,7 @@ class RecetaController extends Controller
 
         if ($configNum->count() > 0) {
             $mostrar = $configNum->last()->num_recetasPagina;
-        }
-        else {
+        } else {
             $mostrar = 12;
         }
 
@@ -238,19 +237,19 @@ class RecetaController extends Controller
         return json_encode($recetasFavoritias);
     }
 
-    public function CambiarEstadoReceta($listaRecetas)
+    public function GuardarCambiosReceta(Request $request)
     {
-        foreach ($listaRecetas as $id_receta){
-            $receta = Receta::findOrFail($id_receta); 
-            $estadoActual = $receta->activo;
-            if ($estadoActual == 1) {
-                $activo = 0;
+
+        foreach ($request->listaRecetas as $id_receta) {
+            $receta = Receta::find($id_receta);
+            if ($receta->activo == 1) {
+                $receta->activo = false;
             } else {
-                $activo = 1;
+                $receta->activo = true;
             }
-        }        
-        //Actualiza el estado
-        $receta->save();
-        return "Recetas actualizadas";
+            $receta->save();
+        }
+
+        return json_encode('actualizado');
     }
 }
