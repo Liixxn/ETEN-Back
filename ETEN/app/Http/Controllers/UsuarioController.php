@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\UsuarioReceta;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -108,21 +109,37 @@ class UsuarioController extends Controller
     public function obtenerUsuarios() // Funcion para obtener los usuarios de la tabla usuarios es admin
     {
         $usuarios = Usuario::get();
-        return json_encode($usuarios);
+
+        $ofertasVisualziaciones = UsuarioOferta::get();
+
+        $idsUsuarios = $ofertasVisualziaciones->groupBy('id_usuario');
+        $visitas = 0;
+        $visitasPorUsuario = [];
+
+        foreach ($idsUsuarios as $idUsuario => $ofertasUsuario) {
+            foreach ($ofertasUsuario as $oferta) {
+                $visitas += $oferta->visitas;
+            }
+            $visitasPorUsuario[$idUsuario] = $visitas;
+            $visitas = 0;
+        }
+
+        $recetasFavoritas = UsuarioReceta::get();
+        $idsUsuariosFavoritos = $recetasFavoritas->groupBy('id_usuario');
+        $favoritos = 0;
+        $favoritosPorUsuario = [];
+
+        foreach ($idsUsuariosFavoritos as $idFavorita => $idUsuario) {
+            foreach ($idUsuario as $recetaFav) {
+                $favoritos++;
+            }
+            $favoritosPorUsuario[$idFavorita] = $favoritos;
+            $favoritos = 0;
+        }
+
+
+        return [$usuarios, $visitasPorUsuario, $favoritosPorUsuario];
     }
-
-    public function obtenerVistasOfertasUsuario()
-    {
-        $union = Usuario::leftJoin('usuario_oferta', 'usuarios.id', '=', 'usuario_oferta.id_usuario')
-            ->leftJoin('usuario_receta', 'usuarios.id', '=', 'usuario_receta.id_usuario')
-            ->select('usuarios.id', 'usuarios.nombre', 'usuarios.email',"usuarios.subscripcion", DB::raw('(SELECT COALESCE(SUM(visitas), 0) FROM usuario_oferta WHERE id_usuario = usuarios.id) as total_visitas'), DB::raw('COUNT(DISTINCT usuario_receta.id_receta) as total_recetas_favoritas'))
-            ->groupBy('usuarios.id', 'usuarios.nombre', 'usuarios.email', 'usuarios.subscripcion')
-            ->get();
-
-
-        return json_encode($union);
-    }
-
 
     public function obtenerTiposUsuarios() {
 
