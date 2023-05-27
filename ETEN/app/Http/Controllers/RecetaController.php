@@ -6,9 +6,11 @@ use App\Models\Config_recetasOfertas;
 use App\Models\Ingrediente;
 use Illuminate\Http\Request;
 
+
 //importacion de los modelos
 use App\Models\Receta;
 use App\Models\Usuario;
+use App\Models\UsuarioOferta;
 use App\Models\UsuarioReceta;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
@@ -168,7 +170,7 @@ class RecetaController extends Controller
     //para las estadisticas del admin todavia no implementada
     public function ObtenerRecetas()
     {
-        $receta = Receta::get(['id', 'titulo', 'categoria', 'activo']);
+        $receta = Receta::get(['id', 'titulo', 'categoria','activo']);
         return json_encode($receta);
     }
 
