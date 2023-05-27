@@ -175,6 +175,8 @@ class RecetaController extends Controller
     public function ObtenerUnaReceta($id)
     {
         $receta = Receta::find($id);
+        //para poder obtener el estado de la receta
+        $receta->activoOriginal = $receta->activo;
         return $receta;
     }
 
@@ -234,5 +236,22 @@ class RecetaController extends Controller
         }
 
         return json_encode($recetasFavoritias);
+    }
+
+    public function CambiarEstadoReceta($idReceta, $activo)
+    {
+        //obtiene la receta a actualizar
+        $receta = Receta::findOrFail($idReceta); 
+        //Actualiza el estado
+        $receta->activo = $activo;
+        $receta->save();
+
+        $cambioPendientes = [
+            'id_receta' => $idReceta,
+            'activo' => $activo
+        ];
+
+        $this->guardarCambiosPendientes($cambioPendientes);
+        return "Receta actualizada";
     }
 }
