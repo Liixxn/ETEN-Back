@@ -238,20 +238,19 @@ class RecetaController extends Controller
         return json_encode($recetasFavoritias);
     }
 
-    public function CambiarEstadoReceta($idReceta, $activo)
+    public function CambiarEstadoReceta($listaRecetas)
     {
-        //obtiene la receta a actualizar
-        $receta = Receta::findOrFail($idReceta); 
+        foreach ($listaRecetas as $lisRecetas){
+            $receta = Receta::findOrFail($lisRecetas); 
+            $estadoActual = $receta->activo;
+            if ($estadoActual == 1) {
+                $activo = 0;
+            } else {
+                $activo = 1;
+            }
+        }        
         //Actualiza el estado
-        $receta->activo = $activo;
         $receta->save();
-
-        $cambioPendientes = [
-            'id_receta' => $idReceta,
-            'activo' => $activo
-        ];
-
-        $this->guardarCambiosPendientes($cambioPendientes);
-        return "Receta actualizada";
+        return "Recetas actualizadas";
     }
 }
