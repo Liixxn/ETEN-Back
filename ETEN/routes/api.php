@@ -82,6 +82,9 @@ Route::get("recetas/ObtenerUnaReceta/{id}", [RecetaController::class, "ObtenerUn
 // Buscador titulo
 Route::post("recetas/BuscarReceta", [RecetaController::class, "BuscarReceta"]);
 
+//Guardar cambios
+Route::post("recetas/GuardarCambiosReceta", [RecetaController::class, "GuardarCambiosReceta"])->middleware(App\Http\Middleware\AdminMiddleware::class);;
+
 /*
 |--------------------------------------------------------------------------
 | FIN Endpoints RECETAS
