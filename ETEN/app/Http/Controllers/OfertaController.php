@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Config_recetasOfertas;
 use Illuminate\Http\Request;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use App\Models\Oferta;
@@ -47,28 +48,35 @@ class OfertaController extends Controller
     public function obtenerOfertasPorCategoria($num_categoria, $pagina)
     {
         $ofertasTodas = Oferta::get();
+        $configNum = Config_recetasOfertas::where('tipo', 1)->get();
+
+        if ($configNum->count() > 0) {
+            $mostrar = $configNum->last()->num_recetasPagina;
+        } else {
+            $mostrar = 12;
+        }
+
         $sizeOfertasTotal = $ofertasTodas->count();
-        $cantOfertas = 20;
-        $offset = ($pagina - 1) * $cantOfertas;
+        //$cantOfertas = 20;
+        $offset = ($pagina - 1) * $mostrar;
         $listaOfertas = Oferta::where('categoria', $num_categoria);
 
         if ($listaOfertas->count() != 0) {
             $listaOfertas = Oferta::where('categoria', $num_categoria);
             $sizeOfertas = $listaOfertas->count();
-            $ofertas = $listaOfertas->offset($offset)
-                ->limit(20)->get();
+            $ofertas = $listaOfertas->offset($offset)->limit($mostrar)->get();
 
-            return [$ofertas, $sizeOfertas, $cantOfertas];
+            return [$ofertas, $sizeOfertas, $mostrar];
         }
 
-        $ofertas = Oferta::offset($offset)
-            ->limit(20)->get();
+        //$ofertas = Oferta::offset($offset)->limit($mostrar)->get();
 
 
-        return [$ofertas, $sizeOfertasTotal, $cantOfertas];
+        return [$ofertasTodas, $sizeOfertasTotal, $mostrar];
     }
 
-    public function ObtenerOfertasMasVisitadas() {
+    public function ObtenerOfertasMasVisitadas()
+    {
 
         $ofertasVisualizaciones = UsuarioOferta::get();
 
@@ -81,13 +89,10 @@ class OfertaController extends Controller
             $nombreOferta = $oferta->nombreOferta;
             $visitas = $value->sum('visitas');
             array_push($arrayVisitasTotales, ["id" => $key, "visitas" => $visitas, "nombreOferta" => $nombreOferta]);
-
         }
 
         $arrayVisitasTotales = collect($arrayVisitasTotales)->sortByDesc('visitas')->take(5)->values()->all();
 
         return json_encode($arrayVisitasTotales);
-
     }
-
 }
