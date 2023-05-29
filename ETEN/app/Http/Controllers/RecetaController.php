@@ -112,6 +112,8 @@ class RecetaController extends Controller
         $recetaNumero = Receta::get();
         $tamnio = $recetaNumero->count();
 
+        $comprobacionMostrar = 0;
+
         $configNum = Config_recetasOfertas::where('tipo', 0)->get();
 
         if ($configNum->count() > 0) {
@@ -126,26 +128,26 @@ class RecetaController extends Controller
 
             $recetasBuscar = Receta::where("titulo", 'LIKE', '%' . $titulo . '%');
 
-            $mostrar = $recetasBuscar->count();
-
             if ($recetasBuscar->count() > 0) {
+
+                $comprobacionMostrar = $recetasBuscar->count();
 
                 $tamnio = $recetasBuscar->count();
 
                 $offset = ($request->pagina - 1) * $mostrar;
 
-                $recetas = $recetasBuscar->select('id', 'titulo', 'img')->offset($offset)->limit($mostrar)->get();
+                $recetas = $recetasBuscar->select('id', 'titulo', 'img')->where('activo', 1)->offset($offset)->limit($mostrar)->get();
 
-                return [$recetas, $tamnio, sizeof($recetas)];
+                return [$recetas, $tamnio, $mostrar, $comprobacionMostrar];
             }
         }
 
         $offset = ($request->pagina - 1) * $mostrar;
+        $comprobacionMostrar = 0;
+        $recetas = Receta::select('id', 'titulo', 'img')->where('activo', 1)->offset($offset)->limit($mostrar)->get();
 
-        $recetas = Receta::select('id', 'titulo', 'img')->offset($offset)->limit($mostrar)->get();
 
-
-        return [$recetas, $tamnio, $mostrar];
+        return [$recetas, $tamnio, $mostrar, $comprobacionMostrar];
     }
 
     public function VerificarRecetaFavorita($id_receta)
@@ -185,8 +187,9 @@ class RecetaController extends Controller
     public function ObtenerRecetasPorCategoria($num_categoria, $pagina)
     {
 
-        $recetas = Receta::get(['id', 'titulo', 'img']);
+        $recetas = Receta::where('activo', 1)->get(['id', 'titulo', 'img']);
         $tamanio = $recetas->count();
+
 
         $configNum = Config_recetasOfertas::where('tipo', 0)->get();
 
@@ -198,7 +201,7 @@ class RecetaController extends Controller
 
         if ($num_categoria != 0) {
 
-            $recetasResultados = Receta::where("categoria", $num_categoria);
+            $recetasResultados = Receta::where("categoria", $num_categoria)->where('activo', 1);
 
             $tamanio = $recetasResultados->count();
 
@@ -206,8 +209,12 @@ class RecetaController extends Controller
 
             $recetas = $recetasResultados->select('id', 'titulo', 'img')->offset($offset)->limit($mostrar)->get();
 
-            return [$recetas, $tamanio, sizeof($recetas)];
+            return [$recetas, $tamanio, $mostrar];
         }
+
+        $offset = ($pagina - 1) * $mostrar;
+
+        $recetas = Receta::select('id', 'titulo', 'img')->where('activo', 1)->offset($offset)->limit($mostrar)->get();
 
         return [$recetas, $tamanio, $mostrar];
     }

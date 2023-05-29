@@ -16,7 +16,7 @@ class IngredienteController extends Controller
 
         $ingredientes = $request->ingredientes;
 
-        $recetasTotales = Receta::get(['id', 'titulo', 'img']);
+        $recetasTotales = Receta::where('activo', 1)->get(['id', 'titulo', 'img']);
 
         $configNum = Config_recetasOfertas::where('tipo', 0)->get();
 
@@ -45,12 +45,12 @@ class IngredienteController extends Controller
             if ($tamanio > 0) {
                 $recetas = $recetasResultados->select('id', 'titulo', 'img')->offset($offset)->limit($mostrar)->get();
 
-                return [$recetas, $tamanio, sizeof($recetas) ,sizeof($recetas)];
+                return [$recetas, $tamanio, sizeof($recetas) , $mostrar];
             }
         }
         $tamanio = count($recetasTotales);
         $tamanioComprobacion = 0;
-        $recetas = Receta::select('id', 'titulo', 'img')->offset($offset)->limit($mostrar)->get();
+        $recetas = Receta::select('id', 'titulo', 'img')->where('activo', 1)->offset($offset)->limit($mostrar)->get();
 
 
         return [$recetas, $tamanio, $tamanioComprobacion, $mostrar];
