@@ -56,7 +56,7 @@ class RecetaController extends Controller
     public function ObtenerRecetasPorId(Request $request)
     {
         $ids = $request->ids;
-        $recetas = Receta::whereIn('id', $ids)->get();
+        $recetas = Receta::where('activo', 1)->whereIn('id', $ids)->get();
         return $recetas;
     }
 
@@ -237,7 +237,7 @@ class RecetaController extends Controller
 
         if (sizeof($recetasFavoritias) != 0) {
 
-            $recetas = Receta::whereIn('id', $recetasFavoritias);
+            $recetas = Receta::whereIn('id', $recetasFavoritias)->where('activo', 1);
             $recetasBuscar = $recetas->where("titulo", 'LIKE', '%' . $request->titulo . '%')->get();
 
             return json_encode($recetasBuscar);
