@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Config_recetasOfertas;
+use Carbon\Carbon;
+use DateTime;
 use Illuminate\Http\Request;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use App\Models\Oferta;
@@ -11,14 +13,6 @@ use App\Models\UsuarioOferta;
 
 class OfertaController extends Controller
 {
-    public function obtenerTodasOfertas()
-    {
-        $ofertas = Oferta::get([
-            'id', 'nombreOferta',
-            'precioActual', 'precioAnterior', 'imagenOferta', 'urlOferta', 'categoria'
-        ])->toArray();
-        return $ofertas;
-    }
 
     public function sumarVisita($id_oferta)
     {
@@ -47,7 +41,9 @@ class OfertaController extends Controller
 
     public function obtenerOfertasPorCategoria($num_categoria, $pagina)
     {
-        $ofertasTodas = Oferta::get();
+
+        $ofertasTodas = Oferta::get()->where('created_at', '>=', Carbon::now()->subDays(3));
+
         $configNum = Config_recetasOfertas::where('tipo', 1)->get();
 
         if ($configNum->count() > 0) {
@@ -62,14 +58,15 @@ class OfertaController extends Controller
         $listaOfertas = Oferta::where('categoria', $num_categoria);
 
         if ($listaOfertas->count() != 0) {
-            $listaOfertas = Oferta::where('categoria', $num_categoria);
+            $listaOfertas = Oferta::where('categoria', $num_categoria)->where('created_at', '>=', Carbon::now()->subDays(3));;
             $sizeOfertas = $listaOfertas->count();
             $ofertas = $listaOfertas->offset($offset)->limit($mostrar)->get();
 
             return [$ofertas, $sizeOfertas, $mostrar];
         }
-
-        //$ofertas = Oferta::offset($offset)->limit($mostrar)->get();
+        $ofertasFiltradas = Oferta::where('created_at', '>=', Carbon::now()->subDays(3));
+        $ofertasTodas = $ofertasFiltradas->offset($offset)->limit($mostrar)->get();
+        $sizeOfertasTotal = $ofertasFiltradas->count();
 
 
         return [$ofertasTodas, $sizeOfertasTotal, $mostrar];
