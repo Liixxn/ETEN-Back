@@ -65,8 +65,11 @@ class OfertaController extends Controller
             return [$ofertas, $sizeOfertas, $mostrar];
         }
         $ofertasFiltradas = Oferta::where('created_at', '>=', Carbon::now()->subDays(3));
-        $ofertasTodas = $ofertasFiltradas->offset($offset)->limit($mostrar)->get();
+
         $sizeOfertasTotal = $ofertasFiltradas->count();
+
+        $ofertasTodas = $ofertasFiltradas->offset($offset)->limit($mostrar)->get();
+
 
 
         return [$ofertasTodas, $sizeOfertasTotal, $mostrar];

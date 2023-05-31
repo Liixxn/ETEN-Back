@@ -109,7 +109,7 @@ class RecetaController extends Controller
     public function BuscarReceta(Request $request)
     {
 
-        $recetaNumero = Receta::get();
+        $recetaNumero = Receta::get()->where('activo', 1);
         $tamnio = $recetaNumero->count();
 
         $comprobacionMostrar = 0;
